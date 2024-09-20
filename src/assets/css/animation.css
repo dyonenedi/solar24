@@ -1,0 +1,102 @@
+@keyframes fade {
+    10% {
+      text-shadow:
+        0 0 2px #2dd4bf,
+        0 0 4px #2dd4bf,
+        0 0 8px #2dd4bf,
+        0 0 12px #2dd4bf,
+        0 0 16px #2dd4bf;
+    }
+  
+    20% {
+      text-shadow:
+        0 0 2px #2dd4bf,
+        0 0 4px #2dd4bf,
+        0 0 8px #2dd4bf,
+        0 0 12px #2dd4bf,
+        0 0 16px #2dd4bf;
+    }
+  
+    40% {
+      text-shadow:
+        0 0 2px #2dd4bf,
+        0 0 4px #2dd4bf,
+        0 0 8px #2dd4bf,
+        0 0 12px #2dd4bf,
+        0 0 16px #7ce900; 
+    }
+    50% {
+      text-shadow:none
+    }
+    60% {
+      text-shadow:
+        0 0 2px #2dd4bf,
+        0 0 4px #2dd4bf,
+        0 0 8px #2dd4bf,
+        0 0 12px #7ce900,
+        0 0 16px #7ce900;
+    }
+    60% {
+      text-shadow:
+        0 0 2px #2dd4bf,
+        0 0 4px #2dd4bf,
+        0 0 8px #2dd4bf,
+        0 0 12px #2dd4bf,
+        0 0 16px #7ce900;
+    }
+    100% {
+      text-shadow:
+        0 0 2px #2dd4bf,
+        0 0 4px #2dd4bf,
+        0 0 8px #2dd4bf,
+        0 0 12px #2dd4bf,
+        0 0 16px #2dd4bf;
+    }
+  }
+
+  @keyframes down {
+    0% {
+      top: 15%;
+    }
+    100% {
+      top: 43%;
+    }
+  }
+  @keyframes up {
+    0% {
+      top: 43%;
+    }
+  
+    100% {
+      top: 15%;
+    }
+  }
+
+  @keyframes down-tx {
+    0% {
+      top: -33%;
+    }
+  
+    100% {
+      top: 35%;
+    }
+  }
+  @keyframes up-tx {
+    0% {
+      top: 35%;
+    }
+  
+    100% {
+      top: -33%;
+    }
+  }
+  
+  @keyframes noise {
+    0%, 100% {
+      background-position: 0 0, 0 0;
+    }
+    50% {
+      background-position: 1px 3px, 1px -3px;
+    }
+  }
+  

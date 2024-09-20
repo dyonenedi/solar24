@@ -1,0 +1,117 @@
+/* IMPORTING GOOGLE FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Warang+Citi&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Honk&display=swap');
+
+/* IMPORTING TAILWIND CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* RESET CSS */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* VAR CSS */
+:root{
+  --color-main: #0a9196;
+  --color-main-h: #07787c;
+}
+
+html {
+  @apply bg-tub-background text-white w-full h-full;
+}
+
+body {  
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: small;
+  font-style: normal;
+  letter-spacing: 1px;
+  width: 100%;
+  height: 100%;
+  background: 
+  linear-gradient(transparent 50%, rgba(0, 0, 0, 0.5) 50%),
+  linear-gradient(90deg, transparent 50%, rgba(0, 0, 0, 0.5) 50%);
+background-size: 4px 4px, 4px 4px;
+animation: noise 0.4s infinite;
+}
+
+a, p, span, h1, h2, h3{
+  height: auto;
+  align-content: center;
+}
+
+/* BOOTSTRAP CLASSES */
+.btn{
+  @apply ff-text f-shadow uppercase border border-teal-300 px-4 py-1 cursor-pointer;
+}
+.btn-lg{
+  @apply ff-text f-shadow uppercase border border-teal-300 px-8 py-2 text-lg;
+}
+.btn-main{
+  background-color: var(--color-main);
+}
+.btn-inverse{
+  @apply bg-teal-400 text-slate-900;
+}
+.btn-main:hover{
+  background-color: var(--color-main-h);
+}
+.f-shadow {
+  @apply drop-shadow-lg;
+}
+
+.ff-text {
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.ff-main {
+  font-family: "Protest Guerrilla", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ff-game {
+  font-family: "Honk", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "MORF" 15,
+    "SHLN" 50;
+}
+
+.ff-strange {
+  font-family: "Noto Sans Warang Citi", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* STYLE CSSS  */
+.text-neon {
+  color: #fff;
+  animation: fade 4s infinite;
+}
+
+/* MAIN CLASSES */
+.APP{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-content {
+  @apply flex flex-grow items-center justify-center w-full;
+}
+

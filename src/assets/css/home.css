@@ -1,0 +1,31 @@
+.section-hover img {
+  @apply opacity-10;
+}
+
+.section-hover:hover img {
+  @apply opacity-40;
+}
+
+.section-hover:hover .link {
+  animation: down .2s forwards;
+}
+
+.section-hover:not(:hover) .link {
+  animation: up .2s forwards;
+}
+
+.section-hover:hover p {
+  animation: down-tx .2s forwards;
+}
+
+.section-hover:not(:hover) p {
+  animation: up-tx .2s forwards;
+}
+
+.hero-container {
+  @apply grid grid-cols-4 gap-6 w-full text-center p-10 text-4xl;
+}
+
+.hero-card {
+  @apply h-96 justify-center items-center relative border border-green-300 overflow-hidden;
+}
