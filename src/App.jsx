@@ -1,7 +1,7 @@
 import { ModalProvider, useModal } from './components/ModalContext'
 import Home from './pages/Home'
 import Account from './pages/Account'
-import Modal from './components/Modal'
+import ModalMsg from './components/ModalMsg'
 import Footer from './components/Footer'
 import Menu from './components/Menu'
 
@@ -28,8 +28,7 @@ const AppContent = () => {
         </section>
        <Footer />
       </div>
-      <Modal id="login" />
-      <Modal id="home" />
+      <ModalMsg />
     </Router>
   )
 }

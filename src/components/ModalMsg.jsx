@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
-import { useModal } from '../components/ModalContext'
+import { useModal } from './ModalContext'
 import { React} from 'react'
 
-const Modal = () => {
+const ModalMsg = () => {
     const {modalState, closeModal} = useModal()
     
     return (
@@ -22,4 +22,4 @@ const Modal = () => {
     )
 }
 
-export default Modal
+export default ModalMsg
