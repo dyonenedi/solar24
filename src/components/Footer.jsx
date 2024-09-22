@@ -1,6 +1,10 @@
-import './../assets/css/footer.css'
+import { useEffect } from 'react'
 
 const Footer = () => {
+    useEffect(() => {
+        import('./../assets/css/footer.css')
+    }, [])
+    
     return (
         <section className='footer border-t border-teal-300 py-4 px-4 flex justify-between items-center text-center'>
             <p className="text-sm">No Rights Reserved ©TrayAgain</p>

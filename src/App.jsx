@@ -1,7 +1,9 @@
-import { ModalProvider, useModal } from './components/ModalContext'
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import {GlobalProvider, GlobalContext} from './GlobalProvider'
+
 import Home from './pages/Home'
 import Account from './pages/Account'
-import ModalMsg from './components/ModalMsg'
 import Footer from './components/Footer'
 import Menu from './components/Menu'
 
@@ -11,32 +13,30 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 library.add(fas, far, fab)
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 const AppContent = () => {
-  const { openModal, modalState } = useModal()
+  const {GModalOpened} = useContext(GlobalContext)
 
   return (
     <Router className='flex flex-col'>
-      <div className={`APP${modalState.show ? " blur" : ""} tv-noise`}>
+      <div className={`APP tv-noise`}>
         <Menu />
         <section className='game-content'>
           <Routes>
-            <Route exact path="/" element={<Home openModalCallback={(text) => openModal(text)} />} />
+            <Route exact path="/" element={<Home />} />
             <Route path="/about" element={<Account />} />
           </Routes>
         </section>
        <Footer />
       </div>
-      <ModalMsg />
     </Router>
   )
 }
 
 export default function App() {
   return (
-    <ModalProvider>
+    <GlobalProvider>
       <AppContent />
-    </ModalProvider>
-  );
+    </GlobalProvider>
+  )
 }
