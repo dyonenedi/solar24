@@ -1,0 +1,18 @@
+.modal-container {
+    @apply absolute top-0 left-0 w-full h-full z-10;
+}
+.modal-bg{
+    @apply absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 z-20;
+}
+.modal-box{
+    @apply flex flex-col relative sm:top-1/2 lg:top-1/3 left-1/2 -translate-x-1/2 w-4/5 -translate-y-1/2 bg-slate-900 z-30 border border-teal-300 border-opacity-60;
+    max-width: 600px;
+    width: 80%;
+    max-height: 70%;
+}
+.modal-text-box{
+    @apply min-h-40 flex justify-center items-center text-center;
+}
+.modal-footer{
+    @apply flex items-center justify-center w-full p-5 border-opacity-25 border-t border-teal-300;
+}

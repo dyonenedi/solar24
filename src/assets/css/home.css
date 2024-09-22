@@ -6,26 +6,37 @@
   @apply opacity-40;
 }
 
-.section-hover:hover .link {
-  animation: down .2s forwards;
-}
-
-.section-hover:not(:hover) .link {
-  animation: up .2s forwards;
-}
-
-.section-hover:hover p {
+.section-hover:hover p.animate-link {
   animation: down-tx .2s forwards;
 }
 
-.section-hover:not(:hover) p {
+.section-hover:not(:hover) p.animate-link {
   animation: up-tx .2s forwards;
 }
 
+.section-hover:hover p.animate-info {
+  animation: down-info .2s forwards;
+}
+
+.section-hover:not(:hover) p.animate-info {
+  animation: up-info .2s forwards;
+}
+
 .hero-container {
-  @apply grid grid-cols-4 gap-6 w-full text-center p-10 text-4xl;
+  @apply grid grid-cols-4 gap-6 w-full text-center p-10 sm:text-3xl text-4xl lg:text-6xl;
 }
 
 .hero-card {
-  @apply h-96 justify-center items-center relative border border-green-300 overflow-hidden;
+  @apply justify-center items-center relative border border-green-300 overflow-hidden;
+  height: 26vw;
+}
+
+.hero-text{
+  @apply absolute text-teal-300 ff-text f-shadow left-1/2 -translate-x-1/2 uppercase;
+  top: 15%;
+}
+
+.hero-info{
+  @apply absolute text-teal-300 ff-text f-shadow left-2 uppercase text-lg;
+  top: -70%;
 }

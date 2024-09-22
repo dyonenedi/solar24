@@ -54,7 +54,7 @@
     }
   }
 
-  @keyframes down {
+  @keyframes down-tx {
     0% {
       top: 15%;
     }
@@ -62,7 +62,7 @@
       top: 43%;
     }
   }
-  @keyframes up {
+  @keyframes up-tx {
     0% {
       top: 43%;
     }
@@ -72,22 +72,22 @@
     }
   }
 
-  @keyframes down-tx {
+  @keyframes down-info {
     0% {
-      top: -33%;
+      top: -70%;
     }
   
     100% {
-      top: 35%;
+      top: 40%;
     }
   }
-  @keyframes up-tx {
+  @keyframes up-info {
     0% {
-      top: 35%;
+      top: 40%;
     }
   
     100% {
-      top: -33%;
+      top: -70%;
     }
   }
   
