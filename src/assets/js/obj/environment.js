@@ -14,11 +14,11 @@ class _Env {
         this.Ground.landColor = "#2dd4bf";
         this.Ground.bgColor = "#a8e6df";
         this.Ground.setup = [ 
-            [true, true, true, false, false, false, true, true, false, false], // linha 1
-            [true, true, false, false, false, false, true, false, false, false], // linha 2
-            [true, false, false, false, true, false, false, false, false, false], // linha 3
-            [false, false, false, true, true, false, false, false, false, false], // linha 4
-            [false, false, true, true, true, false, false, false, false, false], // linha 5
+            [true, false, false, false, false, false, true, true, false, true], // linha 1
+            [true, false, true, true, true, true, false, false, false, true], // linha 2
+            [true, true, false, false, true, true, true, false, false, true], // linha 3
+            [false, false, false, true, true, false, true, false, false, true], // linha 4
+            [false, true, true, true, true, false, false, false, true, true], // linha 5
         ];
 
         this.Ground.w = this.blockSize;

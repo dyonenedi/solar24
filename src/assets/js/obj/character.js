@@ -46,12 +46,14 @@ class _Character {
         this.eyeRadio = this.size / 5;
 
         this.jumping = false;
-        this.keys = [];
+        this.keys = ['ArrowLeft', 'ArrowLeft', " ", 'click', 'a', 'd', 'w'];
         this.direction = { left: false, right: false, up: false, down: false };
 
         // Configurar eventos de teclado dentro do construtor
         window.addEventListener('keydown', this.#handleKeyDown.bind(this));
         window.addEventListener('keyup', this.#handleKeyUp.bind(this));
+        this.Screen.canvas.addEventListener('mousedown', this.#handleClickDown.bind(this));
+        this.Screen.canvas.addEventListener('mouseup', this.#handleClickUp.bind(this));
     }
 
     // ######################### UPDATE #########################
@@ -74,7 +76,7 @@ class _Character {
             this.xEye = this.xEyeRight;
         }
 
-        if ((this.keys[" "] || this.keys['w']) && this.yVelocity == 0 && !this.jumping) {
+        if ((this.keys[" "] || this.keys['w'] || this.keys['click']) && this.yVelocity == 0 && !this.jumping) {
             this.yVelocity = this.jumpAcceleration;
             this.jumping = true;
         }
@@ -133,11 +135,18 @@ class _Character {
             this.jumping = false;
         }
     }
-    #handleKeyDown(e) {
+    #handleClickDown(e) {
+        this.keys['click'] = true;
+    }
+    #handleClickUp(e) {
+        this.keys['click'] = false;
+    }
+    #handleKeyDown(e, mouse=false) {
         this.keys[e.key] = true;
     }
-    #handleKeyUp(e) {
+    #handleKeyUp(e, mouse=false) {
         this.keys[e.key] = false;
+        
         if (e.key != " ") {
             this.#resetAxiValue("x");
         }
