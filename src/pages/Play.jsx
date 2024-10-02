@@ -58,7 +58,8 @@ export default function Play(){
         if (refPlayArea.current){
             refPlayArea.current.width = wCanvas;
             refPlayArea.current.height = hCanvas;
-            refPlayArea.current.style.top = -(hCanvas / 5 * 2) + "px";
+            let botton = -(hCanvas / 5 * 2);
+            refPlayArea.current.style.top = botton + "px";
         }
     }
 

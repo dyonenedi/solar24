@@ -117,8 +117,8 @@ class _Character {
             this.#resetAxiValue('x');
         }
         if (CollisionDirection.right) {
-            this.x -= CollisionDirection.right;
-            this.xx = this.x + this.size;
+            this.xx -= CollisionDirection.right;
+            this.x = this.xx - this.size;
             this.#resetAxiValue('x');
         }
         if (CollisionDirection.up) {
@@ -127,8 +127,8 @@ class _Character {
             this.#resetAxiValue('y');
         }
         if (CollisionDirection.down) {
-            this.y -= CollisionDirection.down;
-            this.yy = this.y + this.size;
+            this.yy -= CollisionDirection.down;
+            this.y = this.yy - this.size;
             this.#resetAxiValue('y');
             this.jumping = false;
         }

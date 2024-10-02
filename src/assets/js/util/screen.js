@@ -1,7 +1,8 @@
 class _Screen {
-    constructor(w, h){
+    constructor(w, h, canvas){
         this.X_COUNT_BLOCKS = _SCREEN_BLOCKS_X;
         this.Y_COUNT_BLOCKS = _SCREEN_BLOCKS_Y;
+        this.canvas = canvas;
         this.w = w;
         this.h = h;
         this.x = 0;
