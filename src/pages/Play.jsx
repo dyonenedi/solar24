@@ -7,6 +7,7 @@ export default function Play(){
     var wScreen = 0;
     var hScreen = 0;
     const {setShowFooter} = useContext(GlobalContext)
+    const refPlayScreen = useRef();
     const refPlayArea = useRef();
 
     useEffect(()=>{
@@ -41,13 +42,23 @@ export default function Play(){
 
         // Validate it's gona fit in screen
         if (wScreen > window.innerWidth) {
-            hScreen = (window.innerWidth * hRef / wRef) - hMenu;
             wScreen = hScreen * wRef / hRef;
+            hScreen = (window.innerWidth * hRef / wRef) - hMenu;
         }
 
-        if(refPlayArea.current){
-            refPlayArea.current.height = hScreen;
-            refPlayArea.current.width = wScreen;
+        if (refPlayScreen.current) {
+            refPlayScreen.current.style.width = wScreen + "px";
+            refPlayScreen.current.style.height = hScreen + "px";
+        }
+
+        // transforma no tamanho do canvas
+        const wCanvas = wScreen * 10 / 6;
+        const hCanvas = hScreen * 5 / 3;
+
+        if (refPlayArea.current){
+            refPlayArea.current.width = wCanvas;
+            refPlayArea.current.height = hCanvas;
+            refPlayArea.current.style.top = -(hCanvas / 5 * 2) + "px";
         }
     }
 
@@ -68,7 +79,9 @@ export default function Play(){
     }
 
     return (
-        <canvas ref={refPlayArea} className="play-area" id="canvas"></canvas>
+        <div ref={refPlayScreen} className="play-screen" id="screen">
+            <canvas ref={refPlayArea} className="play-area" id="canvas"></canvas>
+        </div>
     )
 } 
 

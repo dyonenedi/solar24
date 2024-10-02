@@ -5,21 +5,31 @@ class _Character {
         this.CollisionDetector = CollisionDetector;
 
         // CLASS PROPS
-        this.SIZE_X_SCREEN = 8;
+        this.SIZE_X_SCREEN = 4;
         this.WEIGHT = 20;
-        this.GRAVITY = 0.7;
-        this.MAX_MOVE_VELOCITY = 5;
-        this.MAX_FALL_VELOCITY = 10;
+        this.GRAVITY = 0.4;
+        this.MAX_MOVE_VELOCITY = 2;
+        this.MAX_FALL_VELOCITY = 9;
         this.MOVE_STRENGTH = 10;
-        this.JUMP_STRENGTH = 350;
+        this.JUMP_STRENGTH = 190;
         this.MOVE_ACCELERATION = (this.MOVE_STRENGTH / this.WEIGHT);
         this.JUMP_ACCELERATION = (this.JUMP_STRENGTH / this.WEIGHT);
+        
+        // Faz a transformação das constantes conforme o tamanho da tela.
+        this.weight = this.WEIGHT * this.Screen.h / 480;
+        this.gravity =  this.GRAVITY * this.Screen.h / 480
+        this.maxMoveVelocity = this.MAX_MOVE_VELOCITY * this.Screen.w / 960;
+        this.maxFallVelocity = this.MAX_FALL_VELOCITY * this.Screen.h / 480;
+        this.moveStrength = this.MOVE_STRENGTH * this.Screen.w / 960;
+        this.jumpStrength = this.JUMP_STRENGTH * this.Screen.h / 480;
+        this.moveAcceleration = this.MOVE_ACCELERATION * this.Screen.w / 960;
+        this.jumpAcceleration = this.JUMP_ACCELERATION * this.Screen.h / 480;
 
         this.xVelocity = 0;
         this.yVelocity = 0;
 
         this.bodyColor = "#333";
-        this.size = this.Screen.h / this.SIZE_X_SCREEN;
+        this.size = this.Screen.bkockSize / this.SIZE_X_SCREEN;
         this.w = this.size;
         this.h = this.size;
         this.x = 0;
@@ -52,20 +62,20 @@ class _Character {
         this.direction.up = false;
         this.direction.down = false;
 
-        if (this.keys['ArrowLeft'] && !this.keys['ArrowRight']) {
+        if ((this.keys['ArrowLeft'] || this.keys['a']) && !this.keys['ArrowRight']) {
             this.#moveLeft();
             this.direction.left = true;
             this.xEye = this.xEyeLeft;
         }
 
-        if (this.keys['ArrowRight'] && !this.keys['ArrowLeft']) {
+        if ((this.keys['ArrowRight'] || this.keys['d']) && !this.keys['ArrowLeft']) {
             this.#moveRight();
             this.direction.right = true;
             this.xEye = this.xEyeRight;
         }
 
-        if (this.keys[" "] && this.yVelocity == 0 && !this.jumping) {
-            this.yVelocity = this.JUMP_ACCELERATION;
+        if ((this.keys[" "] || this.keys['w']) && this.yVelocity == 0 && !this.jumping) {
+            this.yVelocity = this.jumpAcceleration;
             this.jumping = true;
         }
 
@@ -133,24 +143,24 @@ class _Character {
         }
     }
     #moveLeft() {
-        this.xVelocity += (this.xVelocity >= this.MAX_MOVE_VELOCITY) ? 0 : this.MOVE_ACCELERATION;
+        this.xVelocity += (this.xVelocity >= this.maxMoveVelocity) ? 0 : this.moveAcceleration;
         this.x += this.xVelocity * -1;
         this.xx = this.x + this.size;
     }
     #moveRight() {
-        this.xVelocity += (this.xVelocity >= this.MAX_MOVE_VELOCITY) ? 0 : this.MOVE_ACCELERATION;
+        this.xVelocity += (this.xVelocity >= this.maxMoveVelocity) ? 0 : this.moveAcceleration;
         this.x += this.xVelocity;
         this.xx = this.x + this.size;
     }
     #jump() {
-        this.yVelocity -= this.GRAVITY;
+        this.yVelocity -= this.gravity;
         this.yVelocity = (this.yVelocity <= 0) ? 0 : this.yVelocity;
         this.y += this.yVelocity * -1;
         this.yy = this.y + this.size;
     }
     #fall() {
-        this.yVelocity += this.GRAVITY;
-        this.yVelocity = (this.yVelocity >= this.MAX_FALL_VELOCITY) ? this.MAX_FALL_VELOCITY : this.yVelocity;
+        this.yVelocity += this.gravity;
+        this.yVelocity = (this.yVelocity >= this.maxFallVelocity) ? this.maxFallVelocity : this.yVelocity;
         this.y += this.yVelocity;
         this.yy = this.y + this.size;
     }

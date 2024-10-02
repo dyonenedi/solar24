@@ -16,8 +16,8 @@ class _Env {
         this.Ground.setup = [ 
             [true, true, true, false, false, false, true, true, false, false], // linha 1
             [true, true, false, false, false, false, true, false, false, false], // linha 2
-            [true, true, false, false, true, false, false, false, false, false], // linha 3
-            [false, false, false, true, true, true, false, false, false, false], // linha 4
+            [true, false, false, false, true, false, false, false, false, false], // linha 3
+            [false, false, false, true, true, false, false, false, false, false], // linha 4
             [false, false, true, true, true, false, false, false, false, false], // linha 5
         ];
 

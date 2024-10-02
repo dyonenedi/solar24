@@ -1,7 +1,15 @@
-.play-area{
+.play-screen{
     border: 1px solid #2dd4bf;
     position: absolute;
     top: 60px;
     left: 50%;
     transform: translate(-50%, 0);
+    overflow: hidden;
+}
+
+.play-area{
+    border: 1px solid #2dd4bf;
+    position: relative;
+    bottom: 0;
+    left: 0;
 }

@@ -82,7 +82,6 @@ class _CollisionDetector {
                 this.collided.down = this.#getFirstIdMinor(downDiff, rightDiff);
             } else {
                 this.collided.down = downDiff;
-                console.log(Obj.yy);
             }
 
             var directions = {down: this.collided.down, left: this.collided.left, right: this.collided.right};
@@ -95,7 +94,7 @@ class _CollisionDetector {
         }
 
         if (Object.entries(directions).some(([key, value]) => value)) {
-            console.log(Obj, Block, directions);
+            // console.log(Obj, Block, directions);
         }
     }
 
