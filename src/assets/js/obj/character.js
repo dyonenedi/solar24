@@ -6,12 +6,12 @@ class _Character {
 
         // CLASS PROPS
         this.SIZE_X_SCREEN = 4;
-        this.WEIGHT = 20;
-        this.GRAVITY = 0.4;
+        this.WEIGHT = 15;
+        this.GRAVITY = 0.6;
         this.MAX_MOVE_VELOCITY = 2;
         this.MAX_FALL_VELOCITY = 9;
-        this.MOVE_STRENGTH = 10;
-        this.JUMP_STRENGTH = 190;
+        this.MOVE_STRENGTH = 50;
+        this.JUMP_STRENGTH = 170;
         this.MOVE_ACCELERATION = (this.MOVE_STRENGTH / this.WEIGHT);
         this.JUMP_ACCELERATION = (this.JUMP_STRENGTH / this.WEIGHT);
         
@@ -46,7 +46,7 @@ class _Character {
         this.eyeRadio = this.size / 5;
 
         this.jumping = false;
-        this.keys = ['ArrowLeft', 'ArrowLeft', 'click', 'a', 'd', 'w'];
+        this.keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'click'];
         this.direction = { left: false, right: false, up: false, down: false };
 
         // Configurar eventos de teclado dentro do construtor
@@ -64,19 +64,19 @@ class _Character {
         this.direction.up = false;
         this.direction.down = false;
 
-        if ((this.keys['ArrowLeft'] || this.keys['a']) && !this.keys['ArrowRight']) {
+        if ((this.keys['ArrowLeft']) && !this.keys['ArrowRight']) {
             this.#moveLeft();
             this.direction.left = true;
             this.xEye = this.xEyeLeft;
         }
 
-        if ((this.keys['ArrowRight'] || this.keys['d']) && !this.keys['ArrowLeft']) {
+        if ((this.keys['ArrowRight']) && !this.keys['ArrowLeft']) {
             this.#moveRight();
             this.direction.right = true;
             this.xEye = this.xEyeRight;
         }
 
-        if ((this.keys['ArrowUp'] || this.keys['w'] || this.keys['click']) && this.yVelocity == 0 && !this.jumping) {
+        if ((this.keys['ArrowUp'] || this.keys['click']) && this.yVelocity == 0 && !this.jumping) {
             this.yVelocity = this.jumpAcceleration;
             this.jumping = true;
         }
@@ -101,7 +101,6 @@ class _Character {
         // Desenha o Corpo
         ctx.fillStyle = this.bodyColor;
         ctx.fillRect(this.x, this.y, this.w, this.h);
-        // console.log(this.x + " - " + this.y + " - " + this.w + " - " + this.h)
 
         // Desenha os olhos
         ctx.beginPath();
@@ -141,10 +140,10 @@ class _Character {
     #handleClickUp(e) {
         this.keys['click'] = false;
     }
-    #handleKeyDown(e, mouse=false) {
+    #handleKeyDown(e) {
         this.keys[e.key] = true;
     }
-    #handleKeyUp(e, mouse=false) {
+    #handleKeyUp(e) {
         this.keys[e.key] = false;
         
         if (e.key != "ArrowUp" && e.key != "w") {
