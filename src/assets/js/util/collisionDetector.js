@@ -26,7 +26,7 @@ class _CollisionDetector {
     
     #checkScreenColliding(Obj){
         if (Obj.x < 0) { // Chewck Left Collied
-            this.collided.left = Obj.x*-1;
+            this.collided.left = Obj.x * -1;
         }
         if (Obj.xx > this.Env.Screen.w) { // Chewck Right Collied
             this.collided.right = Obj.xx - this.Env.Screen.w;
@@ -55,46 +55,21 @@ class _CollisionDetector {
     }
 
     #checkTargetColliding(Obj, Block) {
-        var leftDiff = Block.x + Block.w - Obj.x + this.MIN_VAL;
-        var rightDiff = Obj.x + Obj.w - Block.x + this.MIN_VAL;
-        var upDiff = Block.y + Block.h - Obj.y + this.MIN_VAL;
-        var downDiff = Obj.y + Obj.h - Block.y + this.MIN_VAL;
-        var directions = {};
+        let leftDiff = Block.x + Block.w - Obj.x + this.MIN_VAL;
+        let rightDiff = Obj.x + Obj.w - Block.x + this.MIN_VAL;
+        let upDiff = Block.y + Block.h - Obj.y + this.MIN_VAL;
+        let downDiff = Obj.y + Obj.h - Block.y + this.MIN_VAL;
 
-        if (Obj.direction.up && !this.collided.up && this.#checkCollisionUp(Obj, Block) && (this.#checkCollisionLeft(Obj, Block) || this.#checkCollisionRight(Obj, Block))) {
-            if (Obj.direction.left){
-                this.collided.left = this.#getFirstIdMinor(leftDiff, upDiff);
-                this.collided.up = this.#getFirstIdMinor(upDiff, leftDiff);
-            } else if (Obj.direction.right){
-                this.collided.right = this.#getFirstIdMinor(rightDiff, upDiff);
-                this.collided.up = this.#getFirstIdMinor(upDiff, rightDiff);
-            } else {
-                this.collided.up = upDiff;
-            }
+        let minDiff = Math.min(leftDiff, rightDiff, upDiff, downDiff);
 
-            var directions = {up: this.collided.up, left: this.collided.left, right: this.collided.right};
-        } else if (Obj.direction.down && !this.collided.down && this.#checkCollisionDown(Obj, Block) && (this.#checkCollisionLeft(Obj, Block) || this.#checkCollisionRight(Obj, Block))){
-            if (Obj.direction.left){
-                this.collided.left = this.#getFirstIdMinor(leftDiff, downDiff);
-                this.collided.down = this.#getFirstIdMinor(downDiff, leftDiff);
-            } else if (Obj.direction.right){
-                this.collided.right = this.#getFirstIdMinor(rightDiff, downDiff);
-                this.collided.down = this.#getFirstIdMinor(downDiff, rightDiff);
-            } else {
-                this.collided.down = downDiff;
-            }
-
-            var directions = {down: this.collided.down, left: this.collided.left, right: this.collided.right};
-        } else if(Obj.direction.left && !this.collided.left && this.#checkCollisionLeft(Obj, Block) && (this.#checkCollisionUp(Obj, Block) || this.#checkCollisionDown(Obj, Block))){
+        if (Obj.direction.up && this.#checkCollisionUp(Obj, Block) && minDiff === upDiff) {
+            this.collided.up = upDiff;
+        } else if (Obj.direction.down && this.#checkCollisionDown(Obj, Block) && minDiff === downDiff) {
+            this.collided.down = downDiff;
+        } else if (Obj.direction.left && this.#checkCollisionLeft(Obj, Block) && minDiff === leftDiff) {
             this.collided.left = leftDiff;
-            var directions = {left: this.collided.left};
-        } else if (Obj.direction.right && !this.collided.right && this.#checkCollisionRight(Obj, Block) && (this.#checkCollisionUp(Obj, Block) || this.#checkCollisionDown(Obj, Block))){
+        } else if (Obj.direction.right && this.#checkCollisionRight(Obj, Block) && minDiff === rightDiff) {
             this.collided.right = rightDiff;
-            var directions = {right: this.collided.right};
-        }
-
-        if (Object.entries(directions).some(([key, value]) => value)) {
-            // console.log(Obj, Block, directions);
         }
     }
 
