@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { useContext, useEffect } from 'react'
-import { ModalComponent, ModalState} from './Modal'
+import { useEffect } from 'react'
+import { ModalState} from './Modal'
+import LoginForm from './LoginForm'
 
 const Menu = () => {
   useEffect(() => {
@@ -21,18 +22,7 @@ const Menu = () => {
         </Link>
       </div>
 
-      <ModalComponent id={`modal-login`}>
-        <form className='flex flex-col gap-2'>
-          <div>
-            <label>Usuário</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Senha</label>
-            <input type="password"></input>
-          </div>
-        </form>
-      </ModalComponent>
+      <LoginForm />
     </section>
   )
 }

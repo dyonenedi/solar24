@@ -1,0 +1,4 @@
+window._LEVEL_BLOKS_X = 10;
+window._LEVEL_BLOKS_Y = _LEVEL_BLOKS_X / 2;
+window._SCREEN_BLOCKS_X = 6;
+window._SCREEN_BLOCKS_Y = _SCREEN_BLOCKS_X / 2;

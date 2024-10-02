@@ -1,24 +1,22 @@
-import {React, useEffect} from 'react'
+import {React} from 'react'
 import { Link } from "react-router-dom"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import InfoImg from "./../assets/img/app/bg-1.png"
 import PlayImg from "./../assets/img/app/play.jpg"
 import BuildImg from "./../assets/img/app/build.jpg"
-import { ModalComponent, ModalState} from './../components/Modal'
+import { ModalComponent, ModalState } from './../components/Modal'
+
+import('./../assets/css/home.css');
 
 export default function Home() {
-    useEffect(() => {
-        import('./../assets/css/home.css');
-      }, []);
-
     const { openModal } = ModalState();
  
     return (
         <div className="hero-container">
             <div className="hero-card section-hover ">
                 <Link to="/play" className="flex w-full h-full">
-                    <img src={PlayImg} className="h-full absolute top-0 left-0" />
+                    <img src={PlayImg} className="h-full w-full absolute top-0 left-0" />
                     <p to="/play" className="hero-text animate-link">
                         Jogar
                     </p>
@@ -26,14 +24,14 @@ export default function Home() {
             </div>
             <div className="hero-card section-hover ">
                 <Link onClick={(e) => openModal(e, "modal-build")} className="flex w-full h-full">
-                    <img src={BuildImg} className="h-full absolute top-0 left-0" />
+                    <img src={BuildImg} className="h-full w-full absolute top-0 left-0" />
                     <p  className="hero-text animate-link">
                         Criar
                     </p>
                 </Link>
             </div>
             <div className="hero-card section-hover col-span-2">
-                <img src={InfoImg} className="h-full absolute top-0 left-0" />
+                <img src={InfoImg} className="h-full w-full absolute top-0 left-0" />
                 <p className="hero-text">AJUDA</p>
                 <p className="hero-info animate-info">
                     Para "criar" e "salvar" seu progresso, por favor faça login.

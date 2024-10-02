@@ -1,0 +1,7 @@
+.play-area{
+    border: 1px solid #2dd4bf;
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

@@ -37,6 +37,6 @@
 }
 
 .hero-info{
-  @apply absolute text-teal-300 ff-text f-shadow left-2 uppercase text-lg;
+  @apply absolute text-teal-300 px-4 ff-text f-shadow left-2 uppercase text-lg;
   top: -70%;
 }
