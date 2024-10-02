@@ -46,7 +46,7 @@ class _Character {
         this.eyeRadio = this.size / 5;
 
         this.jumping = false;
-        this.keys = ['ArrowLeft', 'ArrowLeft', " ", 'click', 'a', 'd', 'w'];
+        this.keys = ['ArrowLeft', 'ArrowLeft', 'click', 'a', 'd', 'w'];
         this.direction = { left: false, right: false, up: false, down: false };
 
         // Configurar eventos de teclado dentro do construtor
@@ -76,7 +76,7 @@ class _Character {
             this.xEye = this.xEyeRight;
         }
 
-        if ((this.keys[" "] || this.keys['w'] || this.keys['click']) && this.yVelocity == 0 && !this.jumping) {
+        if ((this.keys['ArrowUp'] || this.keys['w'] || this.keys['click']) && this.yVelocity == 0 && !this.jumping) {
             this.yVelocity = this.jumpAcceleration;
             this.jumping = true;
         }
@@ -147,7 +147,7 @@ class _Character {
     #handleKeyUp(e, mouse=false) {
         this.keys[e.key] = false;
         
-        if (e.key != " ") {
+        if (e.key != "ArrowUp" && e.key != "w") {
             this.#resetAxiValue("x");
         }
     }
