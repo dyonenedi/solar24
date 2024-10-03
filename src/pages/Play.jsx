@@ -1,19 +1,18 @@
 import "./../assets/css/play.css"
-import Game from "./../assets/js/game.js"
+import GameStart from "./../assets/js/game.js"
 import { useContext, useEffect, useRef } from "react"
 import {GlobalContext} from "./../GlobalProvider"
 
 export default function Play(){
-    var wScreen = 0;
-    var hScreen = 0;
+    var wCamera = 0;
+    var hCamera = 0;
     const {setShowFooter} = useContext(GlobalContext)
-    const refPlayScreen = useRef();
-    const refPlayArea = useRef();
+    const cameraRef = useRef();
 
     useEffect(()=>{
         setShowFooter(false)
         resetPlayAreaSize()
-        Game()
+        GameStart()
 
         // Adicionando listener para redimensionar a tela
         window.addEventListener('resize', handleResize);
@@ -34,33 +33,33 @@ export default function Play(){
         const hMenu = 70;
 
         // Ajust new rectangle area less menu
-        hScreen = window.innerHeight - hMenu;
+        hCamera = window.innerHeight - hMenu;
         // Improve calcs by changing to pair
-        hScreen = makeEvenAfterFirst(hScreen)
+        hCamera = makeEvenAfterFirst(hCamera)
         // Get equivalent height by width 
-        wScreen = hScreen * wRef / hRef;
+        wCamera = hCamera * wRef / hRef;
 
         // Validate it's gona fit in screen
-        if (wScreen > window.innerWidth) {
-            wScreen = hScreen * wRef / hRef;
-            hScreen = (window.innerWidth * hRef / wRef) - hMenu;
+        if (wCamera > window.innerWidth) {
+            wCamera = hCamera * wRef / hRef;
+            hCamera = (window.innerWidth * hRef / wRef) - hMenu;
         }
 
-        if (refPlayScreen.current) {
-            refPlayScreen.current.style.width = wScreen + "px";
-            refPlayScreen.current.style.height = hScreen + "px";
+        if (cameraRef.current) {
+            cameraRef.current.style.width = wCamera + "px";
+            cameraRef.current.style.height = hCamera + "px";
         }
 
         // transforma no tamanho do canvas
-        const wCanvas = wScreen * 10 / 6;
-        const hCanvas = hScreen * 5 / 3;
+        // const wCanvas = wCamera * 12 / 6;
+        // const hCanvas = hCamera * 6 / 3;
 
-        if (refPlayArea.current){
-            refPlayArea.current.width = wCanvas;
-            refPlayArea.current.height = hCanvas;
-            let botton = -(hCanvas / 5 * 2);
-            refPlayArea.current.style.top = botton + "px";
-        }
+        // if (refPlayArea.current){
+        //     refPlayArea.current.width = wCanvas;
+        //     refPlayArea.current.height = hCanvas;
+        //     let botton = -(hCanvas / 5 * 2);
+        //     refPlayArea.current.style.top = botton + "px";
+        // }
     }
 
     function makeEvenAfterFirst(number) {
@@ -80,8 +79,9 @@ export default function Play(){
     }
 
     return (
-        <div ref={refPlayScreen} className="play-screen" id="screen">
-            <canvas ref={refPlayArea} className="play-area" id="canvas"></canvas>
+        <div ref={cameraRef} id="camera">
+            <div id="start">Clique pra iniciar</div>
+            <canvas id="canvas"></canvas>
         </div>
     )
 } 

@@ -1,13 +1,13 @@
 class _CollisionDetector {
-    constructor(Environment){
-        this.Env = Environment;
-        this.Blocks = this.Env.Ground.blocks;
-        this.collided = {};
-        this.#resetCollided();
+    constructor(Env){
         this.MIN_VAL = 1;
+        this.Env = Env;
+        this.collided = {};
+
+        this.#resetCollided();
     }
 
-    checkCollisionEnv(Obj, checkScreenCollisions = true, checkLandColision = true) {
+    checkEnvCollision(Obj, checkScreenCollisions = true, checkLandColision = true) {
         // Verificar colisões com as bordas da tela
         if (checkScreenCollisions) {
             this.#checkScreenColliding(Obj);
@@ -15,7 +15,7 @@ class _CollisionDetector {
 
         // Verificar colisões com blocos
         if (checkLandColision) {
-            this.Blocks.forEach(Target => {
+            this.Env.Ground.blocks.forEach(Target => {
                 if (Target.land){
                     // Clona Blocks
                     let Block = {... Target};
@@ -84,7 +84,6 @@ class _CollisionDetector {
     #checkCollisionDown(Obj, Target){
         return (Obj.y + Obj.h >= Target.y && Obj.y + Obj.h <= Target.y + Target.h);
     }
-
     #resetCollided(){
         this.collided = {
             left: false,

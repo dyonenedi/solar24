@@ -6,30 +6,33 @@ class _Character {
 
         // CLASS PROPS
         this.SIZE_X_SCREEN = 4;
-        this.WEIGHT = 15;
-        this.GRAVITY = 0.6;
+        this.WEIGHT = 20;
+        this.GRAVITY = 0.7;
         this.MAX_MOVE_VELOCITY = 2;
         this.MAX_FALL_VELOCITY = 9;
-        this.MOVE_STRENGTH = 50;
-        this.JUMP_STRENGTH = 170;
+        this.MOVE_STRENGTH = 65;
+        this.JUMP_STRENGTH = 250; // 200
+        this.JUMP_STRENGTH = 250; // 200
         this.MOVE_ACCELERATION = (this.MOVE_STRENGTH / this.WEIGHT);
         this.JUMP_ACCELERATION = (this.JUMP_STRENGTH / this.WEIGHT);
+        this.SCREEN_W = 10 * 96;
+        this.SCREEN_H = 5 * 96;
         
         // Faz a transformação das constantes conforme o tamanho da tela.
-        this.weight = this.WEIGHT * this.Screen.h / 480;
-        this.gravity =  this.GRAVITY * this.Screen.h / 480
-        this.maxMoveVelocity = this.MAX_MOVE_VELOCITY * this.Screen.w / 960;
-        this.maxFallVelocity = this.MAX_FALL_VELOCITY * this.Screen.h / 480;
-        this.moveStrength = this.MOVE_STRENGTH * this.Screen.w / 960;
-        this.jumpStrength = this.JUMP_STRENGTH * this.Screen.h / 480;
-        this.moveAcceleration = this.MOVE_ACCELERATION * this.Screen.w / 960;
-        this.jumpAcceleration = this.JUMP_ACCELERATION * this.Screen.h / 480;
+        this.weight = this.WEIGHT * this.Screen.h /  this.SCREEN_H;
+        this.gravity =  this.GRAVITY * this.Screen.h /  this.SCREEN_H;
+        this.maxMoveVelocity = this.MAX_MOVE_VELOCITY * this.Screen.w / this.SCREEN_W;
+        this.maxFallVelocity = this.MAX_FALL_VELOCITY * this.Screen.h /  this.SCREEN_H;
+        this.moveStrength = this.MOVE_STRENGTH * this.Screen.w / this.SCREEN_W;
+        this.jumpStrength = this.JUMP_STRENGTH * this.Screen.h /  this.SCREEN_H;
+        this.moveAcceleration = this.MOVE_ACCELERATION * this.Screen.w / this.SCREEN_W;
+        this.jumpAcceleration = this.JUMP_ACCELERATION * this.Screen.h /  this.SCREEN_H;
 
         this.xVelocity = 0;
         this.yVelocity = 0;
 
         this.bodyColor = "#333";
-        this.size = this.Screen.bkockSize / this.SIZE_X_SCREEN;
+        this.size = this.Screen.Camera.BLOCK_SIZE / this.SIZE_X_SCREEN;
         this.w = this.size;
         this.h = this.size;
         this.x = 0;
@@ -46,39 +49,27 @@ class _Character {
         this.eyeRadio = this.size / 5;
 
         this.jumping = false;
-        this.keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'click'];
-        this.direction = { left: false, right: false, up: false, down: false };
+        this.jumpClick = false;
+        this.direction = { left: false, right: true, up: false, down: false };
 
-        // Configurar eventos de teclado dentro do construtor
-        window.addEventListener('keydown', this.#handleKeyDown.bind(this));
-        window.addEventListener('keyup', this.#handleKeyUp.bind(this));
-        this.Screen.canvas.addEventListener('mousedown', this.#handleClickDown.bind(this));
-        this.Screen.canvas.addEventListener('mouseup', this.#handleClickUp.bind(this));
+        this.Screen.canvasElem.addEventListener('mousedown', this.#handleClickDown.bind(this));
+        this.Screen.canvasElem.addEventListener('touchstart', this.#handleClickDown.bind(this));
     }
 
     // ######################### UPDATE #########################
     update() {
-        // Seto novas posições do personagem
-        this.direction.left = false;
-        this.direction.right = false;
-        this.direction.up = false;
-        this.direction.down = false;
-
-        if ((this.keys['ArrowLeft']) && !this.keys['ArrowRight']) {
+        if (this.direction.left) {
             this.#moveLeft();
-            this.direction.left = true;
             this.xEye = this.xEyeLeft;
-        }
-
-        if ((this.keys['ArrowRight']) && !this.keys['ArrowLeft']) {
+        } else if (this.direction.right) {
             this.#moveRight();
-            this.direction.right = true;
             this.xEye = this.xEyeRight;
         }
 
-        if ((this.keys['ArrowUp'] || this.keys['click']) && this.yVelocity == 0 && !this.jumping) {
+        if ((this.jumpClick) && this.yVelocity == 0 && !this.jumping) {
             this.yVelocity = this.jumpAcceleration;
             this.jumping = true;
+            this.jumpClick = false;
         }
 
         if (this.jumping && this.yVelocity > 0) {
@@ -91,7 +82,7 @@ class _Character {
         }
 
         // Valido colisão retornando posição máxima permitida
-        let CollisionDirection = this.CollisionDetector.checkCollisionEnv(this, true, true);
+        let CollisionDirection = this.CollisionDetector.checkEnvCollision(this, true, true);
         if (Object.values(CollisionDirection).some(value => value)) {
             this.#onCollisionRevert(CollisionDirection);
         }
@@ -101,6 +92,7 @@ class _Character {
         // Desenha o Corpo
         ctx.fillStyle = this.bodyColor;
         ctx.fillRect(this.x, this.y, this.w, this.h);
+        console.log(`${this.x} ${ this.y}`)
 
         // Desenha os olhos
         ctx.beginPath();
@@ -135,20 +127,7 @@ class _Character {
         }
     }
     #handleClickDown(e) {
-        this.keys['click'] = true;
-    }
-    #handleClickUp(e) {
-        this.keys['click'] = false;
-    }
-    #handleKeyDown(e) {
-        this.keys[e.key] = true;
-    }
-    #handleKeyUp(e) {
-        this.keys[e.key] = false;
-        
-        if (e.key != "ArrowUp" && e.key != "w") {
-            this.#resetAxiValue("x");
-        }
+        this.jumpClick = (this.jumping == false && this.yVelocity == 0) ? true : false;
     }
     #moveLeft() {
         this.xVelocity += (this.xVelocity >= this.maxMoveVelocity) ? 0 : this.moveAcceleration;

@@ -3,46 +3,65 @@ import _Character from "./obj/character"
 import _CollisionDetector from "./util/collisionDetector"
 import _Screen from "./util/screen"
 import _Camera from "./util/camera"
+import _Game from "./util/game"
 
-const Game = () => {
-    const canvas = document.getElementById('canvas')
-    const ctx = canvas.getContext('2d');
-    const CANVAS_WIDTH = canvas.width;
-    const CANVAS_HEIGHT = canvas.height;
-    const FRAME_RATE = 60; // Defina a taxa de quadros desejada
-    const FRAME_INTERVAL = 1000 / FRAME_RATE;
+const GameStart = () => {
+    // CONST
+    const startElem = document.getElementById('start')
+    const cameraElem = document.getElementById('camera')
+    const canvasElem = document.getElementById('canvas')
     
-    let lastRenderTime = 0;
-    let isPaused = false
-    var Screen = new _Screen(CANVAS_WIDTH, CANVAS_HEIGHT, canvas);
+    // CLASS
+    var Game = new _Game();
+    Game.setLevel(1);
+    var Camera = new _Camera(cameraElem);
+    var Screen = new _Screen(Game, Camera, canvasElem);
     var Env = new _Env(Screen);
     var CollisionDetector = new _CollisionDetector(Env);
     var Character = new _Character(Screen, CollisionDetector);
-    var Camera = new _Camera(Screen, Character);
-
-    const animate = (currentTime)=>{
-        if (isPaused == false) {
-            const deltaTime = currentTime - lastRenderTime;
-            if (deltaTime > FRAME_INTERVAL) {
+    
+    const ctx = canvasElem.getContext('2d');
+    
+    var lastRenderTime = 0;
+    const start = (currentTime)=>{
+        const deltaTime = currentTime - lastRenderTime;
+        if (Game.isPaused == false) {
+            if (deltaTime > Game.FRAME_INTERVAL) {
                 lastRenderTime = currentTime;
-                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                ctx.clearRect(0, 0, Screen.w, Screen.h);
+
                 Env.draw(ctx);
-                Character.update();
+                if (Game.isStarted)
+                    Character.update();
                 Character.draw(ctx);
-                Camera.update();
+                Camera.update(Character, Screen);
+                
+                if (!Game.isStarted)
+                    return false;
             }
         }
-        requestAnimationFrame(animate);
+        
+        requestAnimationFrame(start);
     }
 
-    // Listener para pausar o jogo
+    start();
+    
+    // ############# Comandos do jogo #############
+    const mouseClick = () => {
+        startElem.style.display = "none";
+        Game.isStarted = true;
+        start();
+    }
     window.addEventListener('keydown', (e) => {
-        if (e.key === ' ') {
-            isPaused = !isPaused;
-        }
+        if (e.key === ' ')
+            Game.isPaused = !Game.isPaused;
     });
-
-    animate();
+    startElem.addEventListener('mousedown', (e) => {
+        mouseClick(e)
+    });
+    startElem.addEventListener('touchstart', (e) => {
+        mouseClick(e)
+    });
 }
 
-export default Game
+export default GameStart

@@ -1,22 +1,28 @@
 class _Screen {
-    constructor(w, h, canvas){
-        this.X_COUNT_BLOCKS = _SCREEN_BLOCKS_X;
-        this.Y_COUNT_BLOCKS = _SCREEN_BLOCKS_Y;
-        this.canvas = canvas;
-        this.w = w;
-        this.h = h;
+    constructor(Game, Camera, canvasElem){
+        this.Game = Game;
+        this.Camera = Camera;
+        this.canvasElem = canvasElem;
+        this.X_COUNT_BLOCKS = this.Game.xMapBlockCount; //_SCREEN_BLOCKS_X
+        this.Y_COUNT_BLOCKS = this.Game.yMapBlockCount; //_SCREEN_BLOCKS_Y
+        this.w = null;
+        this.h = null;
         this.x = 0;
         this.y = 0;
         this.xx = 0;
         this.yy = 0;
-        this.bkockSize = this.w / this.X_COUNT_BLOCKS;
-        this.#setScreenIni();
+
+        this.#setScreenSize();
     }
 
-    #setScreenIni(){
-        this.x = 0;
+    #setScreenSize(){
+        // transforma no tamanho do canvas
+        this.w = this.Camera.BLOCK_SIZE * this.X_COUNT_BLOCKS;
+        this.h = this.Camera.BLOCK_SIZE * this.Y_COUNT_BLOCKS;
+
+        this.canvasElem.style.width = `${this.w}px`;
+        this.canvasElem.style.height = `${this.h}px`;
         this.xx = this.x + this.w;
-        this.y = this.bkockSize * (_LEVEL_BLOKS_Y - this.Y_COUNT_BLOCKS);
         this.yy = this.y + this.h;
     }
 }
