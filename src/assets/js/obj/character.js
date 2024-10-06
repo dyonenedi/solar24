@@ -9,7 +9,8 @@ class _Character {
         this.WEIGHT = 21;
         this.GRAVITY = 1;
         this.MAX_MOVE_VELOCITY = 2;
-        this.MAX_FALL_VELOCITY = 12;
+        this.MAX_FALL_VELOCITY = 20;
+        this.FRINCTION = 7;
         this.MOVE_STRENGTH = 120;
         this.JUMP_STRENGTH = 335;
         this.MOVE_ACCELERATION = (this.MOVE_STRENGTH / this.WEIGHT);
@@ -23,6 +24,7 @@ class _Character {
         this.gravity =  this.GRAVITY * this.Screen.Camera.h /  this.SCREEN_H;
         this.maxMoveVelocity = this.MAX_MOVE_VELOCITY * this.Screen.Camera.w / this.SCREEN_W;
         this.maxFallVelocity = this.MAX_FALL_VELOCITY * this.Screen.Camera.h /  this.SCREEN_H;
+        this.frinction = (this.maxFallVelocity / this.FRINCTION)
         this.moveStrength = this.MOVE_STRENGTH * this.Screen.Camera.w / this.SCREEN_W;
         this.jumpStrength = this.JUMP_STRENGTH * this.Screen.Camera.h /  this.SCREEN_H;
         this.moveAcceleration = this.MOVE_ACCELERATION * this.Screen.Camera.w / this.SCREEN_W;
@@ -54,7 +56,7 @@ class _Character {
         this.xIris = this.xIrisRight;
         this.yIrisUp = (this.size / 10) * 3;
         this.yIrisMiddle = (this.size / 10) * 4;
-        this.yIrisDown = (this.size / 10) * 4;
+        this.yIrisDown = (this.size / 10) * 5;
         this.yIris = this.yIrisMiddle;
         this.sizeIris = this.size / 9;
 
@@ -193,7 +195,7 @@ class _Character {
         this.direction.up = false;
         this.direction.down = true;
 
-        let maxVelocity = (this.isColliding['screen'].left || this.isColliding['screen'].right || this.isColliding['block'].left || this.isColliding['block'].right) ? (this.maxFallVelocity / 4) : this.maxFallVelocity;
+        let maxVelocity = (this.isColliding['screen'].left || this.isColliding['screen'].right || this.isColliding['block'].left || this.isColliding['block'].right) ? (this.frinction) : this.maxFallVelocity;
         this.yVelocity += this.gravity;
         this.yVelocity = (this.yVelocity >= maxVelocity) ? maxVelocity : this.yVelocity;
         this.y += this.yVelocity;
@@ -203,7 +205,15 @@ class _Character {
         this.xEye = ((this.direction.left && !this.isColliding.block.left && !this.isColliding.screen.left) || this.isColliding.block.right || this.isColliding.screen.right) ? this.xEyeLeft : this.xEyeRight;
         this.xIris = ((this.direction.left && !this.isColliding.block.left && !this.isColliding.screen.left) || this.isColliding.block.right || this.isColliding.screen.right) ? this.xIrisLeft : this.xIrisRight;
 
-        this.yIris = (this.direction.up) ? this.yIrisUp : (this.direction.down && (this.isColliding.screen.down || this.isColliding.block.down) ? this.yIrisMiddle: this.yIrisDown);
+        if ((this.isColliding.block.down || this.isColliding.screen.down) && (this.isColliding.block.left || this.isColliding.screen.left || this.isColliding.block.right || this.isColliding.screen.right)) {
+            const irisRand = Math.floor(Math.random() * 1000) + 1;
+            let changeDirection = (irisRand <= 10);
+            this.yIris = (changeDirection) ? (this.yIris == this.yIrisUp ? this.yIrisMiddle : this.yIrisUp) : this.yIris;
+        } else if (this.direction.down && (this.isColliding.screen.left || this.isColliding.block.left || this.isColliding.screen.right || this.isColliding.block.right)) {
+            this.yIris =this.yIrisDown
+        } else {
+            this.yIris =this.yIrisMiddle
+        }
     }
     #resetAxiVelocityValue(axi) {
         if (axi == "x") {

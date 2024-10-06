@@ -10,11 +10,11 @@ class _Camera {
     update(Character, Screen){
         const upperLimitToStartMove = this.BLOCK_SIZE * (this.Y_COUNT_BLOCKS / 2);
         const cameraPosEndY = this.BLOCK_SIZE * (this.Y_COUNT_BLOCKS - Screen.Y_COUNT_BLOCKS);
-        var YCharTransformed = Screen.h - Character.y
-        if (YCharTransformed >= upperLimitToStartMove) {
-            const diff = (upperLimitToStartMove - YCharTransformed)  * -1;
+        var yCharTransformed = Screen.h - Character.y
+        if (yCharTransformed >= upperLimitToStartMove) {
+            const diff = (upperLimitToStartMove - yCharTransformed);
             if (diff >= cameraPosEndY) {
-                Screen.canvasElem.style.bottom = `-${diff}px`;
+                Screen.canvasElem.style.bottom = `${diff}px`;
             } else {
                 Screen.canvasElem.style.bottom = `${cameraPosEndY}px`;
             }
@@ -25,7 +25,7 @@ class _Camera {
         const rightLimitToStartMove = this.BLOCK_SIZE * (this.X_COUNT_BLOCKS / 2);
         const cameraPosEndX = this.BLOCK_SIZE * (this.X_COUNT_BLOCKS - Screen.X_COUNT_BLOCKS);
         if (Character.xx >= rightLimitToStartMove) {
-            const diff = (Character.xx - rightLimitToStartMove) * -1;
+            const diff = (rightLimitToStartMove - Character.xx);
             if (diff >= cameraPosEndX) {
                 Screen.canvasElem.style.left = `${diff}px`;
             } else {

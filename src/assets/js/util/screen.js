@@ -3,8 +3,8 @@ class _Screen {
         this.Game = Game;
         this.Camera = Camera;
         this.canvasElem = canvasElem;
-        this.X_COUNT_BLOCKS = this.Game.xMapBlockCount; //_SCREEN_BLOCKS_X
-        this.Y_COUNT_BLOCKS = this.Game.yMapBlockCount; //_SCREEN_BLOCKS_Y
+        this.X_COUNT_BLOCKS = this.Game.xMapBlockCount;
+        this.Y_COUNT_BLOCKS = this.Game.yMapBlockCount;
         this.w = null;
         this.h = null;
         this.x = 0;
