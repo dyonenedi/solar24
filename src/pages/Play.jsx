@@ -14,6 +14,10 @@ export default function Play(){
         resetPlayAreaSize()
         GameStart()
 
+        window.addEventListener('contextmenu', function(e) {
+            window.getSelection().removeAllRanges();
+        });
+        
         // Adicionando listener para redimensionar a tela
         window.addEventListener('resize', handleResize);
 
@@ -21,6 +25,7 @@ export default function Play(){
         return () => {
             window.removeEventListener('resize', handleResize);
         }
+
     },[])
 
     function handleResize() {
@@ -49,17 +54,6 @@ export default function Play(){
             cameraRef.current.style.width = wCamera + "px";
             cameraRef.current.style.height = hCamera + "px";
         }
-
-        // transforma no tamanho do canvas
-        // const wCanvas = wCamera * 12 / 6;
-        // const hCanvas = hCamera * 6 / 3;
-
-        // if (refPlayArea.current){
-        //     refPlayArea.current.width = wCanvas;
-        //     refPlayArea.current.height = hCanvas;
-        //     let botton = -(hCanvas / 5 * 2);
-        //     refPlayArea.current.style.top = botton + "px";
-        // }
     }
 
     function makeEvenAfterFirst(number) {

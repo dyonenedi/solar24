@@ -1,96 +1,122 @@
 class _CollisionDetector {
     constructor(Env){
-        this.MIN_VAL = 1;
         this.Env = Env;
-        this.collided = {};
-
-        this.#resetCollided();
     }
 
-    checkEnvCollision(Obj, checkScreenCollisions = true, checkLandColision = true) {
-        // Verificar colisões com as bordas da tela
-        if (checkScreenCollisions) {
-            this.#checkScreenColliding(Obj);
-        }
+    checkScreenColliding(Obj){
+        let collidedObj = {};
 
-        // Verificar colisões com blocos
-        if (checkLandColision) {
-            this.Env.Ground.blocks.forEach(Target => {
-                if (Target.land){
-                    // Clona Blocks
-                    let Block = {... Target};
-                    
-                    // Trasforma Env.Ground.blonk do x e y pra screen.
-                    Block.x = Block.x - this.Env.Screen.x;
-                    Block.y = Block.y - this.Env.Screen.y;
-                    // Valida Colisão
-                    this.#checkTargetColliding(Obj, Block);
+        if (Obj.y < 0) { // Check Up Collied
+            collidedObj.up = Obj.y * -1;
+        }
+        if (Obj.yy > this.Env.Screen.h) { // Check Down Collied
+            collidedObj.down = Obj.yy - this.Env.Screen.h;
+        }
+        if (Obj.x < 0) { // Check Left Collied
+            collidedObj.left = Obj.x * -1;
+        }
+        if (Obj.xx > this.Env.Screen.w) { // Check Right Collied
+            collidedObj.right = Obj.xx - this.Env.Screen.w;
+        }
+       
+        let isColliding = false;
+        Object.keys(collidedObj).forEach((key, value) => {
+            Obj.isColliding['screen'][key] = true;
+            isColliding = true;
+        })
+
+        if (isColliding) {
+            Obj.onCollisionRevert(collidedObj);
+        }
+    }
+
+    checkBlockCollision(Obj) {
+        this.Env.Ground.blocks.forEach(Target => {
+            if (Target.isLand){
+                // Clona Blocks
+                let Block = {... Target};
+                
+                // Trasforma Env.Ground.blonk do x e y pra screen.
+                Block.x = Block.x - this.Env.Screen.x;
+                Block.xx = Block.x + Block.w;
+                Block.y = Block.y - this.Env.Screen.y;
+                Block.yy = Block.y + Block.h;
+
+                // Valida Colisão
+                this.#getBlockColliding(Obj, Block);
+            }
+        })
+    }
+
+    #getBlockColliding(Obj, Block) {
+        let collidedObj = {};
+        let upDiff = Block.yy - Obj.y;
+        let downDiff = Obj.yy - Block.y;
+        let leftDiff = Block.xx - Obj.x;
+        let rightDiff = Obj.xx - Block.x;
+
+        let collidedY = this.#checkCollisionY(Obj, Block);
+        let collidedX = this.#checkCollisionX(Obj, Block);
+        if (collidedY && collidedX) {
+            const countDirection = Object.keys(Obj.direction).reduce((count, key) => Obj.direction[key] ? count + 1 : count, 0);
+            let minDiff = Math.min(upDiff, downDiff, leftDiff, rightDiff);
+            if (Obj.direction.up) {
+                if (countDirection == 1) {
+                    collidedObj.up = upDiff;
+                } else {
+                    if (upDiff == minDiff) {
+                        collidedObj.up = minDiff;
+                    }
+                    if (Obj.direction.left && leftDiff == minDiff) {
+                        collidedObj.left = minDiff;
+                    } 
+                    if (Obj.direction.right && rightDiff == minDiff) {
+                        collidedObj.right = minDiff;
+                    }
                 }
-            })
+            } else if(Obj.direction.down) {
+                if (countDirection == 1) {
+                    collidedObj.down = downDiff;
+                    // console.log(`down 1 -> ${downDiff}`)
+                } else {
+                    if (downDiff == minDiff) {
+                        collidedObj.down = minDiff;
+                        // console.log(`down 2 -> ${minDiff}`)
+                    }
+                    if (Obj.direction.left && leftDiff == minDiff) {
+                        collidedObj.left = minDiff;
+                        // console.log(`down 3 -> ${minDiff}`)
+                    } 
+                    if (Obj.direction.right && rightDiff == minDiff) {
+                        collidedObj.right = minDiff;
+                        // console.log(`down 4 -> ${minDiff}`)
+                    }
+                }
+            } else if (Obj.direction.left){
+                collidedObj.left = leftDiff;
+            } else if (Obj.direction.right) {
+                collidedObj.right = rightDiff;
+            } else {
+                console.error('Uma colisção sem direção aconteceu');
+            }
         }
 
-        // Retorna collied e reseta this.collied
-        let collided = this.collided;
-        this.#resetCollided();
-        return collided;
-    }
-    
-    #checkScreenColliding(Obj){
-        if (Obj.x < 0) { // Chewck Left Collied
-            this.collided.left = Obj.x * -1;
-        }
-        if (Obj.xx > this.Env.Screen.w) { // Chewck Right Collied
-            this.collided.right = Obj.xx - this.Env.Screen.w;
-        }
-        if (Obj.y < 0) { // Chewck Up Collied
-            this.collided.up = Obj.y * -1;
-        }
-        if (Obj.yy > this.Env.Screen.h) { // Chewck Down Collied
-            this.collided.down = Obj.yy - this.Env.Screen.h;
-        }
-    }
+        let isColliding = false;
+        Object.keys(collidedObj).forEach((key, value) => {
+            Obj.isColliding['block'][key] = true;
+            isColliding = true;
+        })
 
-    #checkTargetColliding(Obj, Block) {
-        let leftDiff = Block.x + Block.w - Obj.x + this.MIN_VAL;
-        let rightDiff = Obj.x + Obj.w - Block.x + this.MIN_VAL;
-        let upDiff = Block.y + Block.h - Obj.y + this.MIN_VAL;
-        let downDiff = Obj.y + Obj.h - Block.y + this.MIN_VAL;
-
-        let minDiff = Math.min(leftDiff, rightDiff, upDiff, downDiff);
-
-        if (!this.collided.left && Obj.direction.left && this.#checkCollisionLeft(Obj, Block) && minDiff === leftDiff) {
-            this.collided.left = leftDiff;
-        }
-        if (!this.collided.right && Obj.direction.right && this.#checkCollisionRight(Obj, Block) && minDiff === rightDiff) {
-            this.collided.right = rightDiff;
-        }
-        if (!this.collided.up && Obj.direction.up && this.#checkCollisionUp(Obj, Block) && minDiff === upDiff) {
-            this.collided.up = upDiff;
-        }
-        if (!this.collided.down && Obj.direction.down && this.#checkCollisionDown(Obj, Block) && minDiff === downDiff) {
-            this.collided.down = downDiff;
+        if (isColliding) {
+            Obj.onCollisionRevert(collidedObj);
         }
     }
 
-    #checkCollisionLeft(Obj, Target){
-        return (Obj.x <= Target.x + Target.w && Obj.x >= Target.x);
+    #checkCollisionY(Obj, Target){
+        return (Obj.y < Target.yy && Obj.yy > Target.y);
     }
-    #checkCollisionRight(Obj, Target){
-        return (Obj.x + Obj.w >= Target.x && Obj.x + Obj.w <= Target.x + Target.w);
-    }
-    #checkCollisionUp(Obj, Target){
-        return (Obj.y <= Target.y + Target.h && Obj.y >= Target.y);
-    }
-    #checkCollisionDown(Obj, Target){
-        return (Obj.y + Obj.h >= Target.y && Obj.y + Obj.h <= Target.y + Target.h);
-    }
-    #resetCollided(){
-        this.collided = {
-            left: false,
-            right: false,
-            up: false,
-            down: false
-        }
+    #checkCollisionX(Obj, Target){
+        return (Obj.x < Target.xx && Obj.xx > Target.x);
     }
 }
 

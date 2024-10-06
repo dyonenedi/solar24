@@ -16,14 +16,17 @@ class _Screen {
     }
 
     #setScreenSize(){
-        // transforma no tamanho do canvas
+        // Transforma Screen com base no tamanho da camera
         this.w = this.Camera.BLOCK_SIZE * this.X_COUNT_BLOCKS;
         this.h = this.Camera.BLOCK_SIZE * this.Y_COUNT_BLOCKS;
+        this.xx = this.x + this.w;
+        this.yy = this.y + this.h;
 
         this.canvasElem.style.width = `${this.w}px`;
         this.canvasElem.style.height = `${this.h}px`;
-        this.xx = this.x + this.w;
-        this.yy = this.y + this.h;
+        this.canvasElem.width = this.w;
+        this.canvasElem.height = this.h;
+        
     }
 }
 
