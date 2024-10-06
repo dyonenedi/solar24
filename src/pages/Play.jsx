@@ -74,7 +74,7 @@ export default function Play(){
 
     return (
         <div ref={cameraRef} id="camera">
-            <div id="start">Clique pra iniciar</div>
+            <div id="start">Clique para iniciar</div>
             <canvas id="canvas"></canvas>
         </div>
     )
