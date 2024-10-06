@@ -14,13 +14,13 @@ const GameStart = () => {
     const ctx = canvasElem.getContext('2d');
     
     // CLASSES
-    var Game = new _Game();
+    const Game = new _Game();
     Game.setLevel(LEVEL);
-    var Camera = new _Camera(cameraElem);
-    var Screen = new _Screen(Game, Camera, canvasElem);
-    var Env = new _Env(Screen);
-    var CollisionDetector = new _CollisionDetector(Env);
-    var Character = new _Character(Screen, CollisionDetector);
+    const Camera = new _Camera(cameraElem);
+    const Screen = new _Screen(Game, Camera, canvasElem);
+    const Env = new _Env(Screen);
+    const CollisionDetector = new _CollisionDetector(Env);
+    const Character = new _Character(Screen, CollisionDetector);
 
     var lastRenderTime = 0;
     const start = (currentTime)=>{
