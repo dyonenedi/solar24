@@ -1,21 +1,20 @@
-class _Camera {
-    constructor(){
-        this.X_COUNT_BLOCKS = 6;
-        this.Y_COUNT_BLOCKS = 3;
-        this.w = null;
-        this.h = null;
-        this.BLOCK_SIZE = null;
-    }
+export default class _Camera {
+    #DEBUG = false;
+    #X_COUNT_BLOCKS = 6;
+    #Y_COUNT_BLOCKS = 3;
+    #w = null;
+    #h = null;
+    #BLOCK_SIZE = null;
     
     setup(cameraElem){
-        this.w = cameraElem.offsetWidth;
-        this.h = cameraElem.offsetHeight;
-        this.BLOCK_SIZE = this.w / this.X_COUNT_BLOCKS;
+        this.#w = cameraElem.offsetWidth;
+        this.#h = cameraElem.offsetHeight;
+        this.#BLOCK_SIZE = this.#w / this.#X_COUNT_BLOCKS;
     }
 
     update(Player, Screen){
-        const upperLimitToStartMove = this.BLOCK_SIZE * (this.Y_COUNT_BLOCKS / 2);
-        const cameraPosEndY = this.BLOCK_SIZE * (this.Y_COUNT_BLOCKS - Screen.Y_COUNT_BLOCKS);
+        const upperLimitToStartMove = this.#BLOCK_SIZE * (this.#Y_COUNT_BLOCKS / 2);
+        const cameraPosEndY = this.#BLOCK_SIZE * (this.#Y_COUNT_BLOCKS - Screen.Y_COUNT_BLOCKS);
         var yCharTransformed = Screen.h - Player.y
         if (yCharTransformed >= upperLimitToStartMove) {
             const diff = (upperLimitToStartMove - yCharTransformed);
@@ -28,8 +27,8 @@ class _Camera {
             Screen.canvasElem.style.bottom = `0px`;
         }
 
-        const rightLimitToStartMove = this.BLOCK_SIZE * (this.X_COUNT_BLOCKS / 2);
-        const cameraPosEndX = this.BLOCK_SIZE * (this.X_COUNT_BLOCKS - Screen.X_COUNT_BLOCKS);
+        const rightLimitToStartMove = this.#BLOCK_SIZE * (this.#X_COUNT_BLOCKS / 2);
+        const cameraPosEndX = this.#BLOCK_SIZE * (this.#X_COUNT_BLOCKS - Screen.X_COUNT_BLOCKS);
         if (Player.xx >= rightLimitToStartMove) {
             const diff = (rightLimitToStartMove - Player.xx);
             if (diff >= cameraPosEndX) {
@@ -40,7 +39,29 @@ class _Camera {
         } else {
             Screen.canvasElem.style.left = `0px`;
         }
+
+        if (this.#DEBUG) {
+            console.log("| CAMERA X |\nStart move UP: "+upperLimitToStartMove+"\n"+"Mouse Y pos: "+yCharTransformed+"\n"+"Stop move up: "+cameraPosEndY);
+            console.log("| CAMERA Y |\nStart move RIGHT: "+rightLimitToStartMove+"\n"+"Mouse XX pos: "+Player.xx+"\n"+"Stop move right: "+cameraPosEndX);
+        }
+    }
+
+    setDebug(debug){
+        this.#DEBUG = debug;
+    }
+    get BLOCK_SIZE(){
+        return this.#BLOCK_SIZE;
+    }
+    get w(){
+        return this.#w;
+    }
+    get h(){
+        return this.#h;
+    }
+    get xCountBlocks(){
+        return this.#X_COUNT_BLOCKS;
+    }
+    get yCountBlocks(){
+        return this.#Y_COUNT_BLOCKS;
     }
 }
-
-export default _Camera;

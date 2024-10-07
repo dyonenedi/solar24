@@ -1,6 +1,6 @@
 import "./../assets/css/play.css"
 import _GameFramework from '../assets/js/game_framework/builder/game_framework'
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import {GlobalContext} from "./../GlobalProvider"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,61 +8,64 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export default function Play(){
     const {setShowMenu} = useContext(GlobalContext)
     const {setShowFooter} = useContext(GlobalContext)
-    const cameraRef = useRef();
 
-    // ##### INI PAGE
-    useEffect(()=>{
-        setShowMenu(false)
-        setShowFooter(false)
-        resetPlayAreaSize()
-        setEvents();
-        setGameMenuWidth()
-        GameStart();
-    },[])
-    
-    // ##### CONTROLLS
+    // ##### CONTROLL PAINEL VAR #####
     const [useFrameRate, setUseFrameRate] = useState(0)
     const handleFrameRate = (e) => {
         setUseFrameRate(e.target.value);
-        GameFramework.Runtime.setFrameRate(e.target.value);
+        GameFramework.Runtime.FRAME_RATE = e.target.value;
     }
     const [useGravity, setUseGravity] = useState(0)
     const handleGravity = (e) => {
         setUseGravity(e.target.value);
-        GameFramework.Character.gravity = parseFloat(e.target.value);
+        GameFramework.Character.gravity = e.target.value;
     }
     const [useJumping, setUseJumping] = useState(false)
     const [useRight, setUseRight] = useState(false)
     const [useColliding, setUseColliding] = useState(false)
 
+    // ##### INI PAGE #####
+    useEffect(()=>{
+        setShowMenu(false)
+        setShowFooter(false)
+        resetPlayAreaSize()
+        setGameMenuWidth()
+        GameStart();
+        setEvents();
+    },[])
+    
     function resetPlayAreaSize(){
-        if (cameraRef.current) {
-            cameraRef.current.style.width = GAME_W + "px";
-            cameraRef.current.style.height = GAME_H + "px";
-        }
-    }
-
-    function setEvents(){
-        // Adicionando listener para redimensionar a tela
-        window.addEventListener('resize', function(){location.reload()});
+        document.getElementById('camera').style.width = GAME_W + "px";
+        document.getElementById('camera').style.height = GAME_H + "px";
     }
 
     function setGameMenuWidth(){
-        let gameMenu = document.getElementById('gameMenu')
-        gameMenu.style.width = GAME_W
+        document.getElementById('gameMenu').style.width = GAME_W
     }
 
     function GameStart(){
          // CONST
-         const startElem = document.getElementById('start')
          const cameraElem = document.getElementById('camera')
          const canvasElem = document.getElementById('canvas')
          const ctx = canvasElem.getContext('2d');
+         const frameRate = 60;
          const level = 1;
+         const debug = {
+            Runtime: false,
+            Player: false,
+            Map: false,
+            Camera: false,
+            Screen: false,
+            Env: true,
+            CollisionDetector: false,
+            Character: false,
+         };
          
          // GAME
-         const setup = {startElem:startElem, cameraElem:cameraElem, canvasElem:canvasElem, ctx:ctx, level:level};
-         GameFramework = new _GameFramework(setup);
+         const setup = {frameRate: frameRate, cameraElem:cameraElem, canvasElem:canvasElem, ctx:ctx, level:level};
+         GameFramework = new _GameFramework();
+         GameFramework.debug(debug);
+         GameFramework.setup(setup);
          GameFramework.start();
 
          setInterval(() => {
@@ -74,10 +77,37 @@ export default function Play(){
          }, 16.6);
     }
 
+    function setEvents(){
+        // ##### ON RESIZE #####
+        window.addEventListener('resize', function(){location.reload()});
+        // ##### GAME CONTROLS #####
+        window.addEventListener('keydown', keyPress.bind(this));
+        document.getElementById('start').addEventListener('mousedown', startDivClick.bind(this));
+        document.getElementById('start').addEventListener('touchstart', startDivClick.bind(this));
+        // ##### GAME CHARACTER #####
+        document.getElementById('canvas').addEventListener('mousedown', canvasDivClick.bind(this));
+        document.getElementById('canvas').addEventListener('touchstart', canvasDivClick.bind(this));
+    }
+    function startDivClick() {
+        document.getElementById('start').style.display = "none";
+        GameFramework.Runtime.isStarted = true;
+        GameFramework.start();
+    }
+    function keyPress(e){
+        if (e.key === ' ') {
+            GameFramework.Runtime.isPaused = (!GameFramework.Runtime.isPaused);
+        }
+    }
+    function canvasDivClick() {
+        if (GameFramework.Runtime.isStarted && !GameFramework.Runtime.isPaused) {
+            GameFramework.Character.jumpClick = Date.now();
+        }
+    }
+
     return (
         <>
             <div id="gameMenu" className="absolute top-0 h-10 pt-5 flex justify-start items-center">
-                <span data-tip="Home"><Link to='/'><FontAwesomeIcon icon={'circle-chevron-left'} /> Voltar</Link></span>
+                <span className="mr-2" data-tip="Home"><Link to='/'><FontAwesomeIcon icon={'circle-chevron-left'} /> Voltar</Link></span>
                 <span className="relative" data-tip="Frame Rate">
                     <FontAwesomeIcon icon={'wave-square'} className="absolute top-3 right-6"/>
                     <input value={useFrameRate} onChange={handleFrameRate} type="text" className="w-20"/>
@@ -101,11 +131,10 @@ export default function Play(){
                 
                 
             </div>
-            <div ref={cameraRef} id="camera">
+            <div id="camera">
                 <div id="start">Clique para iniciar</div>
                 <canvas id="canvas"></canvas>
             </div>
         </>
     )
-} 
-
+}

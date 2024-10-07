@@ -96,7 +96,7 @@
       background-position: 0 0, 0 0;
     }
     50% {
-      background-position: 1px 3px, 1px -3px;
+      background-position: 10px 10px, 8px -8px;
     }
   }
   

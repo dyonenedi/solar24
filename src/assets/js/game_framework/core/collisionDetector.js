@@ -1,4 +1,6 @@
-class _CollisionDetector {  
+class _CollisionDetector { 
+    #DEBUG = false;
+
     setup(wScreen, hScreen, xScreen, yScreen){
         this.wScreen = wScreen;
         this.hScreen = hScreen;
@@ -55,11 +57,11 @@ class _CollisionDetector {
         })
     }
 
-    // ##### PRIVATE #####
-    #deepClone(obj) {
-        return JSON.parse(JSON.stringify(obj));
+    setDebug(debug){
+        this.#DEBUG = debug;
     }
-    
+
+    // ##### PRIVATE #####
     #getBlockColliding(Obj, Block) {
         let collidedObj = {};
         let upDiff = Block.yy - Obj.y;
@@ -97,7 +99,7 @@ class _CollisionDetector {
                     }
                     if (Obj.direction.left && leftDiff == minDiff) {
                         collidedObj.left = minDiff;
-                        // console.log(`down 3 -> ${minDiff}`)
+                        // console.log(`Collided: ${Block.index} | ${leftDiff} - ${downDiff} ${minDiff}`)
                     } 
                     if (Obj.direction.right && rightDiff == minDiff) {
                         collidedObj.right = minDiff;

@@ -40,7 +40,7 @@
     background: 
     linear-gradient(transparent 50%, rgba(0, 0, 0, 0.5) 50%),
     linear-gradient(90deg, transparent 50%, rgba(0, 0, 0, 0.5) 50%);
-    background-size: 4px 4px, 4px 4px;
+    background-size: 6px 6px, 6px 6px;
     animation: noise 0.4s infinite;
   }
 
@@ -64,6 +64,9 @@
   select:-webkit-autofill:focus {
     -webkit-text-fill-color: #fff; /* Cor do texto */
     -webkit-box-shadow: 0 0 0px 1000px #0f172a inset; /* Cor de fundo */
+  }
+  input[disabled]{
+    background-color: var(--color-main);
   }
   .no-select {
     -webkit-user-select: none; /* Safari */

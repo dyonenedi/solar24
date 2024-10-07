@@ -1,10 +1,12 @@
-class _Map {
+export default class _Map {
+    #DEBUG = false;
+    #xBlockCount = null;
+    #yBlockCount = null;
+    #blocks = [];
+    #maps = [];
+
     constructor(){
-        this.xBlockCount = null;
-        this.yBlockCount = null;
-        this.blocks = [];
-        
-        this.maps = [
+        this.#maps = [
             [
                 [true, false, false, true, false, false, false, false, false, false, false, false], // linha 1
                 [true, false, false, true, false, false, false, false, false, false, false, false], // linha 2
@@ -31,10 +33,31 @@ class _Map {
     }
 
     setup(level){
-        this.blocks = this.maps[level-1];
-        this.xBlockCount = this.blocks[0].length;
-        this.yBlockCount = this.blocks.length;
+        this.#blocks = this.#maps[level-1];
+        this.#xBlockCount = this.#blocks[0].length;
+        this.#yBlockCount = this.#blocks.length;
+
+        if (this.#DEBUG) {
+            console.log("| MAP |\nLevel: "+level+"\n"+"Linhas: "+this.#xBlockCount+"\n"+"Colunas: "+this.#yBlockCount);
+        }
+    }
+
+    setDebug(debug){
+        this.#DEBUG = debug;
+    }
+    get xBlockCount(){
+        return this.#xBlockCount;
+    }
+    set xBlockCount(value){
+        this.#xBlockCount = value;
+    }
+    get yBlockCount(){
+        return this.#yBlockCount;
+    }
+    set yBlockCount(value){
+        this.#yBlockCount = value;
+    }
+    get blocks(){
+        return this.#blocks;
     }
 }
-
-export default _Map
