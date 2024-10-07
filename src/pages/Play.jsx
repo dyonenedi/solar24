@@ -18,22 +18,22 @@ export default function Play(){
         setEvents();
         setGameMenuWidth()
         GameStart();
-        setUseFrameRate(GameFramework.Runtime.FRAME_RATE)
-        setUseGravity(GameFramework.Character.gravity)
     },[])
-    
     
     // ##### CONTROLLS
     const [useFrameRate, setUseFrameRate] = useState(0)
     const handleFrameRate = (e) => {
         setUseFrameRate(e.target.value);
         GameFramework.Runtime.setFrameRate(e.target.value);
-    };
+    }
     const [useGravity, setUseGravity] = useState(0)
     const handleGravity = (e) => {
         setUseGravity(e.target.value);
         GameFramework.Character.gravity = parseFloat(e.target.value);
-    };
+    }
+    const [useJumping, setUseJumping] = useState(false)
+    const [useRight, setUseRight] = useState(false)
+    const [useColliding, setUseColliding] = useState(false)
 
     function resetPlayAreaSize(){
         if (cameraRef.current) {
@@ -43,9 +43,6 @@ export default function Play(){
     }
 
     function setEvents(){
-        // Retira seleção do site
-        window.addEventListener('contextmenu', function() {window.getSelection().removeAllRanges()});
-        
         // Adicionando listener para redimensionar a tela
         window.addEventListener('resize', function(){location.reload()});
     }
@@ -67,20 +64,42 @@ export default function Play(){
          const setup = {startElem:startElem, cameraElem:cameraElem, canvasElem:canvasElem, ctx:ctx, level:level};
          GameFramework = new _GameFramework(setup);
          GameFramework.start();
+
+         setInterval(() => {
+            setUseFrameRate(GameFramework.Runtime.FRAME_RATE)
+            setUseGravity(GameFramework.Character.gravity)
+            setUseJumping(GameFramework.Character.direction.up)
+            setUseRight(GameFramework.Character.direction.right)
+            setUseColliding((GameFramework.Character.isColliding.block.right ? ('right') : (GameFramework.Character.isColliding.block.left ? 'left': 'none')))
+         }, 16.6);
     }
 
     return (
         <>
             <div id="gameMenu" className="absolute top-0 h-10 pt-5 flex justify-start items-center">
                 <span data-tip="Home"><Link to='/'><FontAwesomeIcon icon={'circle-chevron-left'} /> Voltar</Link></span>
-                <span className="px-1 relative" data-tip="Frame Rate">
+                <span className="relative" data-tip="Frame Rate">
                     <FontAwesomeIcon icon={'wave-square'} className="absolute top-3 right-6"/>
                     <input value={useFrameRate} onChange={handleFrameRate} type="text" className="w-20"/>
                 </span>
-                <span className="px-1 relative" data-tip="Gravidade">
+                <span className="relative" data-tip="Gravidade">
                     <FontAwesomeIcon icon={'person-falling-burst'} className="absolute top-3 right-6"/>
                     <input value={useGravity} onChange={handleGravity} type="text" className="w-20"/>
                 </span>
+                <span className="relative" data-tip="Pulando?">
+                    <FontAwesomeIcon icon={'person-running'} className="absolute top-3 right-6"/>
+                    <input value={useJumping} disabled type="text" className="w-20"/>
+                </span>
+                <span className="relative" data-tip="Movendo para Direita?">
+                    <FontAwesomeIcon icon={'person-walking-arrow-right'} className="absolute top-3 right-6"/>
+                    <input value={useRight} disabled type="text" className="w-20"/>
+                </span>
+                <span className="relative" data-tip="Está colidindo no eixo X?">
+                    <FontAwesomeIcon icon={'person-walking-dashed-line-arrow-right'} className="absolute top-3 right-6"/>
+                    <input value={useColliding} disabled type="text" className="w-20"/>
+                </span>
+                
+                
             </div>
             <div ref={cameraRef} id="camera">
                 <div id="start">Clique para iniciar</div>
