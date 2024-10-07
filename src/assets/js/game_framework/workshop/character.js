@@ -1,10 +1,10 @@
-class _Character {
-    constructor(Screen, CollisionDetector) {
-        // INGEÇÕES DE DEPENDENCIA SOLID
-        this.Screen = Screen;
-        this.CollisionDetector = CollisionDetector;
+import _Dummy from "../core/dummy";
+import _CollisionDetector from '../core/collisionDetector';
 
-        // CLASS PROPS
+class _Character extends _Dummy {
+    constructor() {
+        super();
+        
         this.SIZE_X_SCREEN = 4;
         this.WEIGHT = 21;
         this.GRAVITY = 1;
@@ -18,28 +18,30 @@ class _Character {
         this.SCREEN_W = 10 * 96;
         this.SCREEN_H = 5 * 96;
         this.CLICK_JUMP_LIVETIME = 200;
-        
+    }
+
+    setup(wCamera, hCamera, blockSize, hScreen, canvasElem, Rumtime){
         // Faz a transformação das constantes conforme o tamanho da tela.
-        this.weight = this.WEIGHT * this.Screen.Camera.h /  this.SCREEN_H;
-        this.gravity =  this.GRAVITY * this.Screen.Camera.h /  this.SCREEN_H;
-        this.maxMoveVelocity = this.MAX_MOVE_VELOCITY * this.Screen.Camera.w / this.SCREEN_W;
-        this.maxFallVelocity = this.MAX_FALL_VELOCITY * this.Screen.Camera.h /  this.SCREEN_H;
+        this.weight = this.WEIGHT * hCamera /  this.SCREEN_H;
+        this.gravity =  this.GRAVITY * hCamera /  this.SCREEN_H;
+        this.maxMoveVelocity = this.MAX_MOVE_VELOCITY * wCamera / this.SCREEN_W;
+        this.maxFallVelocity = this.MAX_FALL_VELOCITY * hCamera /  this.SCREEN_H;
         this.frinction = (this.maxFallVelocity / this.FRINCTION)
-        this.moveStrength = this.MOVE_STRENGTH * this.Screen.Camera.w / this.SCREEN_W;
-        this.jumpStrength = this.JUMP_STRENGTH * this.Screen.Camera.h /  this.SCREEN_H;
-        this.moveAcceleration = this.MOVE_ACCELERATION * this.Screen.Camera.w / this.SCREEN_W;
-        this.jumpAcceleration = this.JUMP_ACCELERATION * this.Screen.Camera.h /  this.SCREEN_H;
+        this.moveStrength = this.MOVE_STRENGTH * wCamera / this.SCREEN_W;
+        this.jumpStrength = this.JUMP_STRENGTH * hCamera /  this.SCREEN_H;
+        this.moveAcceleration = this.MOVE_ACCELERATION * wCamera / this.SCREEN_W;
+        this.jumpAcceleration = this.JUMP_ACCELERATION * hCamera /  this.SCREEN_H;
 
         this.xVelocity = 0;
         this.yVelocity = 0;
 
         this.bodyColor = "#333";
-        this.size = this.Screen.Camera.BLOCK_SIZE / this.SIZE_X_SCREEN;
+        this.size = blockSize / this.SIZE_X_SCREEN;
         this.w = this.size;
         this.h = this.size;
         this.x = 0;
         this.xx = this.x + this.size;
-        this.y = this.Screen.h - this.h;
+        this.y = hScreen - this.h;
         this.yy = this.y + this.size;
 
         // SKIN
@@ -68,12 +70,11 @@ class _Character {
             block: { left: false, right: false, up: false, down: false }
         };
 
-        this.Screen.canvasElem.addEventListener('mousedown', this.#handleClickDown.bind(this));
-        this.Screen.canvasElem.addEventListener('touchstart', this.#handleClickDown.bind(this));
+        canvasElem.addEventListener('mousedown', this.#handleClickDown.bind(this, Rumtime));
+        canvasElem.addEventListener('touchstart', this.#handleClickDown.bind(this, Rumtime));
     }
 
-    // ######################### UPDATE #########################
-    update() {
+    update(CollisionDetector, blocks) {
         // RESETA TIME JUMP_CLICK
         this.#resetJumpClick();
 
@@ -117,15 +118,15 @@ class _Character {
         this.#resetIsColliding();
 
         // Valido colisão SCREEN retornando posição máxima permitida
-        this.CollisionDetector.checkScreenColliding(this);
+        CollisionDetector.checkScreenColliding(this);
 
         // Valido colisão BLOKCS retornando posição máxima permitida
-        this.CollisionDetector.checkBlockCollision(this);
+        CollisionDetector.checkBlockCollision(this, blocks);
 
         this.#setSkinDirection()
 
     }
-    // ######################### DRAW #########################
+
     draw(ctx) {
         // Desenha o Corpo
         ctx.fillStyle = this.bodyColor;
@@ -145,7 +146,7 @@ class _Character {
         ctx.fill();
         ctx.closePath();
     }
-    // ######################### ON COLISION #########################
+
     onCollisionRevert(CollisionDirection) {
         if (CollisionDirection.up) {
             this.y += CollisionDirection.up;
@@ -171,6 +172,8 @@ class _Character {
             this.#resetAxiVelocityValue('x');
         }
     }
+
+    // ##### PRIVATE #####
     #moveLeft() {
         this.xVelocity += (this.xVelocity >= this.maxMoveVelocity) ? 0 : this.moveAcceleration;
         this.x += this.xVelocity * -1;
@@ -233,8 +236,8 @@ class _Character {
             block: { left: false, right: false, up: false, down: false }
         };
     }
-    #handleClickDown(e) {
-        if (STARTED && !PAUSED) {
+    #handleClickDown(Rumtime) {
+        if (Rumtime.isStared && !Rumtime.isPaused) {
             this.jumpClick = Date.now();
         }
     }

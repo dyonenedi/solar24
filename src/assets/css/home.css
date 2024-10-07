@@ -23,7 +23,7 @@
 }
 
 .hero-container {
-  @apply grid grid-cols-4 gap-6 w-full text-center p-10 sm:text-3xl text-4xl lg:text-6xl;
+  @apply grid grid-cols-4 gap-6 w-full text-center p-10 sm:text-2xl text-3xl lg:text-5xl;
 }
 
 .hero-card {

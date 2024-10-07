@@ -1,24 +1,24 @@
 class _Screen {
-    constructor(Game, Camera, canvasElem){
-        this.Game = Game;
-        this.Camera = Camera;
-        this.canvasElem = canvasElem;
-        this.X_COUNT_BLOCKS = this.Game.xMapBlockCount;
-        this.Y_COUNT_BLOCKS = this.Game.yMapBlockCount;
+    constructor(){
+        this.canvasElem = null;
+        this.X_COUNT_BLOCKS = null;
+        this.Y_COUNT_BLOCKS = null;
         this.w = null;
         this.h = null;
         this.x = 0;
         this.y = 0;
         this.xx = 0;
         this.yy = 0;
-
-        this.#setScreenSize();
     }
 
-    #setScreenSize(){
+    setup(canvasElem, blockSize, xMapBlockCount, yMapBlockCount){
+        this.canvasElem = canvasElem;
+        this.X_COUNT_BLOCKS = xMapBlockCount;
+        this.Y_COUNT_BLOCKS = yMapBlockCount;
+
         // Transforma Screen com base no tamanho da camera
-        this.w = this.Camera.BLOCK_SIZE * this.X_COUNT_BLOCKS;
-        this.h = this.Camera.BLOCK_SIZE * this.Y_COUNT_BLOCKS;
+        this.w = blockSize * this.X_COUNT_BLOCKS;
+        this.h = blockSize * this.Y_COUNT_BLOCKS;
         this.xx = this.x + this.w;
         this.yy = this.y + this.h;
 

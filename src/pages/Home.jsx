@@ -1,5 +1,8 @@
-import {React} from 'react'
+import('./../assets/css/home.css');
+
+import {React, useEffect, useContext} from 'react'
 import { Link } from "react-router-dom"
+import { GlobalContext } from './../GlobalProvider'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import InfoImg from "./../assets/img/app/bg-1.png"
@@ -7,10 +10,16 @@ import PlayImg from "./../assets/img/app/play.jpg"
 import BuildImg from "./../assets/img/app/build.jpg"
 import { ModalComponent, ModalState } from './../components/Modal'
 
-import('./../assets/css/home.css');
 
 export default function Home() {
     const { openModal } = ModalState();
+    const { setShowMenu } = useContext(GlobalContext)
+    const { setShowFooter } = useContext(GlobalContext)
+
+    useEffect(()=>{
+        setShowMenu(true)
+        setShowFooter(true)
+    })
  
     return (
         <div className="hero-container">

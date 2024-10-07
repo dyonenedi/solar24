@@ -1,18 +1,17 @@
+import('./../assets/css/menu.css')
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { GlobalContext } from './../GlobalProvider'
 import { ModalState} from './Modal'
 import LoginForm from './LoginForm'
 
 const Menu = () => {
-  useEffect(() => {
-    import('./../assets/css/menu.css')
-  }, [])
-
   const { openModal } = ModalState();
+  const {showMenu} = useContext(GlobalContext)
 
   return (
-    <section className='menu border-b border-teal-300'>
-      <div className="flex items-center justify-between h-full w-full">
+    <section className={`menu border-b border-teal-300 flex justify-center ${!showMenu && "hidden"}`}>
+      <div id="menu" className="flex items-center justify-between h-full w-full">
         <Link to={'/'} className="flex items-center justify-center ml-8">
           <span className="ff-text text-xl text-neon uppercase">Try Again</span>
         </Link>

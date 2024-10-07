@@ -1,22 +1,17 @@
-// ####### GAME MAPS #######
-class _Game {
+class _Map {
     constructor(){
-        this.FRAME_RATE = 60;
-        this.FRAME_INTERVAL = 1000 / this.FRAME_RATE;
-
-        this.level = null;
-        this.xMapBlockCount = null;
-        this.yMapBlockCount = null;
-        this.map = null;
+        this.xBlockCount = null;
+        this.yBlockCount = null;
+        this.blocks = [];
         
         this.maps = [
             [
-                [false, false, true, true, false, false, false, false, false, false, false, false], // linha 1
+                [true, false, false, true, false, false, false, false, false, false, false, false], // linha 1
                 [true, false, false, true, false, false, false, false, false, false, false, false], // linha 2
-                [true, false, true, true, false, false, false, false, false, false, false, false], // linha 3
-                [true, false, false, true, false, false, false, false, false, false, false, false], // linha 4
-                [true, false, true, true, false, true, false, true, false, true, false, true], // linha 5
-                [false, false , true, false, false, false, false, false, false, false, false, false], // linha 6
+                [true, false, false, true, false, false, false, false, false, false, false, false], // linha 3
+                [false, false, false, true, false, false, false, false, false, false, false, false], // linha 4
+                [true, true,  false, true, true, true, false, true, false, true, false, true], // linha 5
+                [false, false, false, true, true, false, false, false, false, false, false, false], // linha 6
             ],
             [
                 [false, false, false, false, true, true,  false, false, false, true, false, false], // linha 1
@@ -35,12 +30,11 @@ class _Game {
         ];
     }
 
-    setLevel(level){
-        this.level = level;
-        this.map = this.maps[this.level-1];
-        this.xMapBlockCount = this.map[0].length;
-        this.yMapBlockCount = this.map.length;
+    setup(level){
+        this.blocks = this.maps[level-1];
+        this.xBlockCount = this.blocks[0].length;
+        this.yBlockCount = this.blocks.length;
     }
 }
 
-export default _Game
+export default _Map

@@ -1,16 +1,22 @@
 class _Camera {
-    constructor(cameraElem){
+    constructor(){
         this.X_COUNT_BLOCKS = 6;
         this.Y_COUNT_BLOCKS = 3;
+        this.w = null;
+        this.h = null;
+        this.BLOCK_SIZE = null;
+    }
+    
+    setup(cameraElem){
         this.w = cameraElem.offsetWidth;
         this.h = cameraElem.offsetHeight;
         this.BLOCK_SIZE = this.w / this.X_COUNT_BLOCKS;
     }
 
-    update(Character, Screen){
+    update(Player, Screen){
         const upperLimitToStartMove = this.BLOCK_SIZE * (this.Y_COUNT_BLOCKS / 2);
         const cameraPosEndY = this.BLOCK_SIZE * (this.Y_COUNT_BLOCKS - Screen.Y_COUNT_BLOCKS);
-        var yCharTransformed = Screen.h - Character.y
+        var yCharTransformed = Screen.h - Player.y
         if (yCharTransformed >= upperLimitToStartMove) {
             const diff = (upperLimitToStartMove - yCharTransformed);
             if (diff >= cameraPosEndY) {
@@ -24,8 +30,8 @@ class _Camera {
 
         const rightLimitToStartMove = this.BLOCK_SIZE * (this.X_COUNT_BLOCKS / 2);
         const cameraPosEndX = this.BLOCK_SIZE * (this.X_COUNT_BLOCKS - Screen.X_COUNT_BLOCKS);
-        if (Character.xx >= rightLimitToStartMove) {
-            const diff = (rightLimitToStartMove - Character.xx);
+        if (Player.xx >= rightLimitToStartMove) {
+            const diff = (rightLimitToStartMove - Player.xx);
             if (diff >= cameraPosEndX) {
                 Screen.canvasElem.style.left = `${diff}px`;
             } else {

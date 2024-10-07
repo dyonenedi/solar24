@@ -1,6 +1,9 @@
-class _CollisionDetector {
-    constructor(Env){
-        this.Env = Env;
+class _CollisionDetector {  
+    setup(wScreen, hScreen, xScreen, yScreen){
+        this.wScreen = wScreen;
+        this.hScreen = hScreen;
+        this.xScreen = xScreen;
+        this.yScreen = yScreen;
     }
 
     checkScreenColliding(Obj){
@@ -9,14 +12,14 @@ class _CollisionDetector {
         if (Obj.y < 0) { // Check Up Collied
             collidedObj.up = Obj.y * -1;
         }
-        if (Obj.yy > this.Env.Screen.h) { // Check Down Collied
-            collidedObj.down = Obj.yy - this.Env.Screen.h;
+        if (Obj.yy > this.hScreen) { // Check Down Collied
+            collidedObj.down = Obj.yy - this.hScreen;
         }
         if (Obj.x < 0) { // Check Left Collied
             collidedObj.left = Obj.x * -1;
         }
-        if (Obj.xx > this.Env.Screen.w) { // Check Right Collied
-            collidedObj.right = Obj.xx - this.Env.Screen.w;
+        if (Obj.xx > this.wScreen) { // Check Right Collied
+            collidedObj.right = Obj.xx - this.wScreen;
         }
        
         let isColliding = false;
@@ -30,16 +33,20 @@ class _CollisionDetector {
         }
     }
 
-    checkBlockCollision(Obj) {
-        this.Env.Ground.blocks.forEach(Target => {
+    checkBlockCollision(Obj, blocks) {
+        blocks.forEach(Target => {
             if (Target.isLand){
-                // Clona Blocks
+               // Clona Blocks usando a função de clonagem profunda
                 let Block = {... Target};
+
+                // Certifique-se de que this.xScreen e this.yScreen são válidos
+                const xScreen = this.xScreen || 0;
+                const yScreen = this.yScreen || 0;
                 
-                // Trasforma Env.Ground.blonk do x e y pra screen.
-                Block.x = Block.x - this.Env.Screen.x;
+               // Transforma Env.Ground.blonk do x e y para screen
+                Block.x = Block.x - xScreen;
                 Block.xx = Block.x + Block.w;
-                Block.y = Block.y - this.Env.Screen.y;
+                Block.y = Block.y - yScreen;
                 Block.yy = Block.y + Block.h;
 
                 // Valida Colisão
@@ -48,6 +55,11 @@ class _CollisionDetector {
         })
     }
 
+    // ##### PRIVATE #####
+    #deepClone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+    
     #getBlockColliding(Obj, Block) {
         let collidedObj = {};
         let upDiff = Block.yy - Obj.y;
@@ -111,11 +123,11 @@ class _CollisionDetector {
             Obj.onCollisionRevert(collidedObj);
         }
     }
-
     #checkCollisionY(Obj, Target){
         return (Obj.y < Target.yy && Obj.yy > Target.y);
     }
     #checkCollisionX(Obj, Target){
+        // console.log(`${Obj.x} < ${Target.xx}`)
         return (Obj.x < Target.xx && Obj.xx > Target.x);
     }
 }
