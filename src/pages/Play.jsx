@@ -90,9 +90,11 @@ export default function Play(){
         document.getElementById('canvas').addEventListener('touchstart', canvasDivClick.bind(this));
     }
     function startDivClick() {
-        document.getElementById('start').style.display = "none";
-        GameFramework.Runtime.isStarted = true;
-        GameFramework.start();
+        if (GameFramework.Runtime.isStarted == false) {
+            document.getElementById('start').style.display = "none";
+            GameFramework.Runtime.isStarted = true;
+            GameFramework.start();
+        }
     }
     function keyPress(e){
         if (e.key === ' ') {
