@@ -2,6 +2,7 @@
 export default class _Runtime{
     #DEBUG = false;
     #FRAME_RATE= 60;
+    #FRAME_INTERVAL_DEFAULT = 16.667;
     #FRAME_INTERVAL = 1000 / this.#FRAME_RATE;
     #isStarted = false;
     #isPaused = false;
@@ -19,6 +20,7 @@ export default class _Runtime{
         this.#DEBUG = (debug);
     }
 
+    //#region GETS & SETS
     get FRAME_RATE(){
         return this.#FRAME_RATE;
     }
@@ -40,4 +42,8 @@ export default class _Runtime{
     get FRAME_INTERVAL(){
         return this.#FRAME_INTERVAL;
     }
+    get  FRAME_INTERVAL_DEFAULT(){
+        return this.#FRAME_INTERVAL;
+    }
+    //#endregion
 }

@@ -45,6 +45,8 @@ export default class _Map {
     setDebug(debug){
         this.#DEBUG = debug;
     }
+    
+    //#region GETS & SETS
     get xBlockCount(){
         return this.#xBlockCount;
     }
@@ -60,4 +62,5 @@ export default class _Map {
     get blocks(){
         return this.#blocks;
     }
+    //#endregion
 }

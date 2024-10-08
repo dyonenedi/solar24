@@ -49,6 +49,8 @@ export default class _Camera {
     setDebug(debug){
         this.#DEBUG = debug;
     }
+
+    //#region GETS & SETS
     get BLOCK_SIZE(){
         return this.#BLOCK_SIZE;
     }
@@ -64,4 +66,5 @@ export default class _Camera {
     get yCountBlocks(){
         return this.#Y_COUNT_BLOCKS;
     }
+    //#endregion
 }

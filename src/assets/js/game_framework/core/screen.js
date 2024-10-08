@@ -35,67 +35,54 @@ export default class _Screen {
         this.#DEBUG = (debug);
     }
 
+    //#region GETS & SETS
     get canvasElem() {
         return this.#canvasElem;
     }
-
     set canvasElem(value) {
         this.#canvasElem = value;
     }
-
     get w() {
         return this.#w;
     }
-
     set w(value) {
         this.#w = value;
     }
-
     get h() {
         return this.#h;
     }
-
     set h(value) {
         this.#h = value;
     }
-
     get x() {
         return this.#x;
     }
-
     set x(value) {
         this.#x = value;
     }
-
     get y() {
         return this.#y;
     }
-
     set y(value) {
         this.#y = value;
     }
-
     get xx() {
         return this.#xx;
     }
-
     set xx(value) {
         this.#xx = value;
     }
-
     get yy() {
         return this.#yy;
     }
-
     set yy(value) {
         this.#yy = value;
     }
-
     get X_COUNT_BLOCKS() {
         return this.#X_COUNT_BLOCKS;
     }
-
     get Y_COUNT_BLOCKS() {
         return this.#Y_COUNT_BLOCKS;
     }
+    //#endregion
 }

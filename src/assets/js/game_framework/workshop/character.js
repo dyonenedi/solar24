@@ -18,13 +18,10 @@ class _Character extends _Dummy {
     #SCREEN_H = 5 * 96;
     #CLICK_JUMP_LIVETIME = 200;
 
-    #weight;
     #gravity;
     #maxMoveVelocity;
     #maxFallVelocity;
     #frinction;
-    #moveStrength;
-    #jumpStrength;
     #moveAcceleration;
     #jumpAcceleration;
 
@@ -72,13 +69,10 @@ class _Character extends _Dummy {
 
     setup(wCamera, hCamera, blockSize, hScreen){
         // Faz a transformação das constantes conforme o tamanho da tela.
-        this.#weight = this.#WEIGHT * hCamera /  this.#SCREEN_H;
         this.#gravity =  this.#GRAVITY * hCamera /  this.#SCREEN_H;
         this.#maxMoveVelocity = this.#MAX_MOVE_VELOCITY * wCamera / this.#SCREEN_W;
         this.#maxFallVelocity = this.#MAX_FALL_VELOCITY * hCamera /  this.#SCREEN_H;
         this.#frinction = (this.#maxFallVelocity / this.#FRINCTION)
-        this.#moveStrength = this.#MOVE_STRENGTH * wCamera / this.#SCREEN_W;
-        this.#jumpStrength = this.#JUMP_STRENGTH * hCamera /  this.#SCREEN_H;
         this.#moveAcceleration = this.#MOVE_ACCELERATION * wCamera / this.#SCREEN_W;
         this.#jumpAcceleration = this.#JUMP_ACCELERATION * hCamera /  this.#SCREEN_H;
 
@@ -222,6 +216,7 @@ class _Character extends _Dummy {
         }
     }
 
+    //#region GETS & SETS
     setDebug(debug){
         this.#DEBUG = debug;
     }
@@ -268,6 +263,7 @@ class _Character extends _Dummy {
     set isColliding(value){
         this.#isColliding = value; 
     }
+    //#endregion
 
     // ##### PRIVATE #####
     #debug(){
