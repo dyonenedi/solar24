@@ -45,6 +45,7 @@ export default function Play(){
 
     function GameStart(){
          // CONST
+         document.getElementById('start').innerHTML = "Clique para iniciar";
          const cameraElem = document.getElementById('camera')
          const canvasElem = document.getElementById('canvas')
          const ctx = canvasElem.getContext('2d');
@@ -56,7 +57,7 @@ export default function Play(){
             Map: false,
             Camera: false,
             Screen: false,
-            Env: true,
+            Env: false,
             CollisionDetector: false,
             Character: false,
          };
@@ -95,7 +96,13 @@ export default function Play(){
     }
     function keyPress(e){
         if (e.key === ' ') {
-            GameFramework.Runtime.isPaused = (!GameFramework.Runtime.isPaused);
+            GameFramework.Runtime.isPaused = !GameFramework.Runtime.isPaused;
+            if (GameFramework.Runtime.isPaused) {
+                document.getElementById('start').style.display = "flex";
+                document.getElementById('start').innerHTML = "Pausado";
+            } else {
+                document.getElementById('start').style.display = "none";
+            }
         }
     }
     function canvasDivClick() {
@@ -107,7 +114,11 @@ export default function Play(){
     return (
         <>
             <div id="gameMenu" className="absolute top-0 h-10 pt-5 flex justify-start items-center">
-                <span className="mr-2" data-tip="Home"><Link to='/'><FontAwesomeIcon icon={'circle-chevron-left'} /> Voltar</Link></span>
+                <span className="mr-2" data-tip="Home">
+                    <Link to='/'>
+                        <FontAwesomeIcon icon={'circle-chevron-left'} /> BACK
+                    </Link>
+                </span>
                 <span className="relative" data-tip="Frame Rate">
                     <FontAwesomeIcon icon={'wave-square'} className="absolute top-3 right-6"/>
                     <input value={useFrameRate} onChange={handleFrameRate} type="text" className="w-20"/>
@@ -128,8 +139,11 @@ export default function Play(){
                     <FontAwesomeIcon icon={'person-walking-dashed-line-arrow-right'} className="absolute top-3 right-6"/>
                     <input value={useColliding} disabled type="text" className="w-20"/>
                 </span>
-                
-                
+                <span className="mr-2" data-tip="Jogar novamente">
+                    <a href="/play">
+                        <FontAwesomeIcon icon={'repeat'} /> AGAIN
+                    </a>
+                </span>
             </div>
             <div id="camera">
                 <div id="start">Clique para iniciar</div>
