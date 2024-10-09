@@ -39,7 +39,6 @@ export default class _GameFramework {
         this.ctx = setup.ctx;
 
         // ##### GAME SETUP #####
-        this.Runtime.setup(setup.frameRate);
         this.Map.setup(setup.level);
         this.Camera.setup(this.cameraElem);
         this.Screen.setup(this.canvasElem, this.Camera.BLOCK_SIZE, this.Map.xBlockCount, this.Map.yBlockCount);
@@ -52,9 +51,9 @@ export default class _GameFramework {
         var lastRenderTime = 0;
         const run = (currentTime)=>{
             const deltaTime = currentTime - lastRenderTime;
+            lastRenderTime = currentTime;
             if (this.Runtime.isPaused == false) {
                 if (deltaTime > this.Runtime.FRAME_INTERVAL) {
-                    lastRenderTime = currentTime;
                     this.ctx.clearRect(0, 0, this.Screen.w, this.Screen.h);
                     this.Env.draw(this.ctx, this.Screen.x, this.Screen.y, this.Screen.xx, this.Screen.yy); // vai ter que mudar
                     if (this.Runtime.isStarted){
@@ -69,8 +68,10 @@ export default class _GameFramework {
                 }
             }
             
+            this.Runtime.fps = 1000 / deltaTime;
             requestAnimationFrame(run);
         }
         run();
+
     }
 }

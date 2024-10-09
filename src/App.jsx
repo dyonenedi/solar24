@@ -86,7 +86,7 @@ const AppContent = () => {
         <div id="small-tooltip"></div>
         <Loader />
         <Menu />
-        <section id="game-content" className='game-content m-auto block'>
+        <section id="game-content" className='game-content m-auto block relative'>
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route path="/about" element={<Account />} />

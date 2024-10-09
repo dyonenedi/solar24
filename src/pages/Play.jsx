@@ -23,6 +23,7 @@ export default function Play(){
     const [useJumping, setUseJumping] = useState(false)
     const [useRight, setUseRight] = useState(false)
     const [useColliding, setUseColliding] = useState(false)
+    const [useFps, setUseFps] = useState(0)
 
     // ##### INI PAGE #####
     useEffect(()=>{
@@ -49,7 +50,6 @@ export default function Play(){
          const cameraElem = document.getElementById('camera')
          const canvasElem = document.getElementById('canvas')
          const ctx = canvasElem.getContext('2d');
-         const frameRate = 60;
          const level = 1;
          const debug = {
             Runtime: false,
@@ -63,7 +63,7 @@ export default function Play(){
          };
          
          // GAME
-         const setup = {frameRate: frameRate, cameraElem:cameraElem, canvasElem:canvasElem, ctx:ctx, level:level};
+         const setup = {cameraElem:cameraElem, canvasElem:canvasElem, ctx:ctx, level:level};
          GameFramework = new _GameFramework();
          GameFramework.debug(debug);
          GameFramework.setup(setup);
@@ -75,6 +75,7 @@ export default function Play(){
             setUseJumping(GameFramework.Character.direction.up)
             setUseRight(GameFramework.Character.direction.right)
             setUseColliding((GameFramework.Character.isColliding.block.right ? ('right') : (GameFramework.Character.isColliding.block.left ? 'left': 'none')))
+            setUseFps(GameFramework.Runtime.fps)
          }, 16.6);
     }
 
@@ -115,12 +116,12 @@ export default function Play(){
 
     return (
         <>
-            <div id="gameMenu" className="absolute top-0 h-10 pt-5 flex justify-start items-center">
-                <span className="mr-2" data-tip="Home">
+            <div id="gameMenu" className="absolute top-0 h-10 pt-5 flex justify-start items-center w-full">
+                <button className="btn-lg btn-game mr-2 py-2" data-tip="Home">
                     <Link to='/'>
                         <FontAwesomeIcon icon={'circle-chevron-left'} /> BACK
                     </Link>
-                </span>
+                </button>
                 <span className="relative" data-tip="Frame Rate">
                     <FontAwesomeIcon icon={'wave-square'} className="absolute top-3 right-6"/>
                     <input value={useFrameRate} onChange={handleFrameRate} type="text" className="w-20"/>
@@ -141,11 +142,15 @@ export default function Play(){
                     <FontAwesomeIcon icon={'person-walking-dashed-line-arrow-right'} className="absolute top-3 right-6"/>
                     <input value={useColliding} disabled type="text" className="w-20"/>
                 </span>
-                <span className="mr-2" data-tip="Jogar novamente">
-                    <a href="/play">
-                        <FontAwesomeIcon icon={'repeat'} /> AGAIN
-                    </a>
+                <span className="relative " data-tip="FPS">
+                    <FontAwesomeIcon icon={'gauge-high'} className="absolute top-3 right-6"/>
+                    <input value={useFps} disabled type="text" className="w-20"/>
                 </span>
+                <button  className="btn btn-main btn-lg absolute right-0 py-2" data-tip="Jogar novamente">
+                    <a href="/play">
+                        <FontAwesomeIcon icon={'repeat'} /> Restart
+                    </a>
+                </button>
             </div>
             <div id="camera">
                 <div id="start">Clique para iniciar</div>

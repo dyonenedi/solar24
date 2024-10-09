@@ -2,12 +2,12 @@
 export default class _Runtime{
     #DEBUG = false;
     #FRAME_RATE= 60;
-    #FRAME_INTERVAL_DEFAULT = 16.667;
     #FRAME_INTERVAL = 1000 / this.#FRAME_RATE;
     #isStarted = false;
     #isPaused = false;
+    #fps = 0;
 
-    setup(frameRate=60){
+    #setup(frameRate=60){
         this.#FRAME_RATE = frameRate;
         this.#FRAME_INTERVAL = 1000 / this.#FRAME_RATE;
 
@@ -25,7 +25,7 @@ export default class _Runtime{
         return this.#FRAME_RATE;
     }
     set FRAME_RATE(value){
-        this.setup(parseFloat(value))
+        this.#setup(parseFloat(value))
     }
     get isStarted(){
         return this.#isStarted;
@@ -42,8 +42,11 @@ export default class _Runtime{
     get FRAME_INTERVAL(){
         return this.#FRAME_INTERVAL;
     }
-    get  FRAME_INTERVAL_DEFAULT(){
-        return this.#FRAME_INTERVAL;
+    get fps(){
+        return this.#fps;
+    }
+    set fps(value){
+        this.#fps = (value).toFixed(1);
     }
     //#endregion
 }
