@@ -52,7 +52,6 @@ export default function Play(){
          const ctx = canvasElem.getContext('2d');
          const level = 1;
          const debug = {
-            Runtime: false,
             Player: false,
             Map: false,
             Camera: false,

@@ -1,6 +1,5 @@
 
 export default class _Runtime{
-    #DEBUG = false;
     #FRAME_RATE= 60;
     #FRAME_INTERVAL = 1000 / this.#FRAME_RATE;
     #isStarted = false;
@@ -10,14 +9,6 @@ export default class _Runtime{
     #setup(frameRate=60){
         this.#FRAME_RATE = frameRate;
         this.#FRAME_INTERVAL = 1000 / this.#FRAME_RATE;
-
-        if (this.#DEBUG) {
-            console.log("| RUNTIME |\nFrame Rate (fps): "+this.#FRAME_RATE+"\nStarted: "+this.#isStarted+"\nPaused: "+this.#isPaused);
-        }
-    }
-
-    setDebug(debug){
-        this.#DEBUG = (debug);
     }
 
     //#region GETS & SETS
