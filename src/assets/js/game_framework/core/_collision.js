@@ -1,76 +1,13 @@
-class _CollisionDetector { 
-    #DEBUG = false;
-
-    setup(wScreen, hScreen, xScreen, yScreen){
-        this.wScreen = wScreen;
-        this.hScreen = hScreen;
-        this.xScreen = xScreen;
-        this.yScreen = yScreen;
-    }
-
-    checkScreenColliding(Obj){
+class _Collision { 
+    getColliding(Obj, Target) {
         let collidedObj = {};
+        let upDiff = Target.yy - Obj.y;
+        let downDiff = Obj.yy - Target.y;
+        let leftDiff = Target.xx - Obj.x;
+        let rightDiff = Obj.xx - Target.x;
 
-        if (Obj.y < 0) { // Check Up Collied
-            collidedObj.up = Obj.y * -1;
-        }
-        if (Obj.yy > this.hScreen) { // Check Down Collied
-            collidedObj.down = Obj.yy - this.hScreen;
-        }
-        if (Obj.x < 0) { // Check Left Collied
-            collidedObj.left = Obj.x * -1;
-        }
-        if (Obj.xx > this.wScreen) { // Check Right Collied
-            collidedObj.right = Obj.xx - this.wScreen;
-        }
-       
-        let isColliding = false;
-        Object.keys(collidedObj).forEach((key, value) => {
-            Obj.isColliding['screen'][key] = true;
-            isColliding = true;
-        })
-
-        if (isColliding) {
-            Obj.onCollisionRevert(collidedObj);
-        }
-    }
-
-    checkBlockCollision(Obj, blocks) {
-        blocks.forEach(Target => {
-            if (Target.isLand){
-               // Clona Blocks usando a função de clonagem profunda
-                let Block = {... Target};
-
-                // Certifique-se de que this.xScreen e this.yScreen são válidos
-                const xScreen = this.xScreen || 0;
-                const yScreen = this.yScreen || 0;
-                
-               // Transforma Env.Ground.blonk do x e y para screen
-                Block.x = Block.x - xScreen;
-                Block.xx = Block.x + Block.w;
-                Block.y = Block.y - yScreen;
-                Block.yy = Block.y + Block.h;
-
-                // Valida Colisão
-                this.#getBlockColliding(Obj, Block);
-            }
-        })
-    }
-
-    setDebug(debug){
-        this.#DEBUG = debug;
-    }
-
-    // ##### PRIVATE #####
-    #getBlockColliding(Obj, Block) {
-        let collidedObj = {};
-        let upDiff = Block.yy - Obj.y;
-        let downDiff = Obj.yy - Block.y;
-        let leftDiff = Block.xx - Obj.x;
-        let rightDiff = Obj.xx - Block.x;
-
-        let collidedY = this.#checkCollisionY(Obj, Block);
-        let collidedX = this.#checkCollisionX(Obj, Block);
+        let collidedY = this.#checkCollisionY(Obj, Target);
+        let collidedX = this.#checkCollisionX(Obj, Target);
         if (collidedY && collidedX) {
             const countDirection = Object.keys(Obj.direction).reduce((count, key) => Obj.direction[key] ? count + 1 : count, 0);
             let minDiff = Math.min(upDiff, downDiff, leftDiff, rightDiff);
@@ -125,13 +62,40 @@ class _CollisionDetector {
             Obj.onCollisionRevert(collidedObj);
         }
     }
+    getCollidingOut(Obj, Target){
+        let collidedObj = {};
+
+        if (Obj.y < Target.y) { // Check Up Collied
+            collidedObj.up = (Obj.y - Target.y) * -1;
+        }
+        if (Obj.yy > Target.h) { // Check Down Collied
+            collidedObj.down = (Obj.yy - Target.h);
+        }
+        if (Obj.x < Target.x) { // Check Left Collied
+            collidedObj.left = (Obj.x - Target.x) * -1;
+        }
+        if (Obj.xx > Target.w) { // Check Right Collied
+            collidedObj.right = (Obj.xx - Target.w);
+        }
+       
+        let isColliding = false;
+        Object.keys(collidedObj).forEach((key, value) => {
+            Obj.isColliding['screen'][key] = true;
+            isColliding = true;
+        })
+
+        if (isColliding) {
+            Obj.onCollisionRevert(collidedObj);
+        }
+    }
+
+    // ##### PRIVATE #####
     #checkCollisionY(Obj, Target){
         return (Obj.y < Target.yy && Obj.yy > Target.y);
     }
     #checkCollisionX(Obj, Target){
-        // console.log(`${Obj.x} < ${Target.xx}`)
         return (Obj.x < Target.xx && Obj.xx > Target.x);
     }
 }
 
-export default _CollisionDetector;
+export default _Collision

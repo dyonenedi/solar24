@@ -3,7 +3,6 @@ import _Runtime from './game_framework/core/runtime';
 import _Map from "./game_framework/core/map"
 import _Camera from './game_framework/core/camera';
 import _Screen from './game_framework/core/screen';
-import _CollisionDetector from './game_framework/core/collisionDetector';
 import _Character from './game_framework/workshop/character';
 
 export default class _GameController {
@@ -12,7 +11,6 @@ export default class _GameController {
         this.Map = new _Map();
         this.Camera = new _Camera();
         this.Screen = new _Screen();
-        this.CollisionDetector = new _CollisionDetector();
         this.Character = new _Character(); // WORKSHOP
         this.Player = new _Player(); // WORKSHOP
     }
@@ -29,10 +27,9 @@ export default class _GameController {
         this.Map.setMaps(this.maps);
         this.Map.setLevel(this.level);
         this.Camera.setSize(this.cameraElem);
-        this.Screen.setSize(this.canvasElem, this.Camera.BLOCK_SIZE, this.Map.xBlockCount, this.Map.yBlockCount);
-        this.Map.setupBlocks(this.Camera.BLOCK_SIZE);
-        this.CollisionDetector.setup(this.Screen.w, this.Screen.h);
-        this.Character.setup(this.Camera.w, this.Camera.h, this.Camera.BLOCK_SIZE, this.Screen.h);
+        this.Screen.setup(this.canvasElem, this.Camera.BLOCK_SIZE, this.Map.xBlockCount, this.Map.yBlockCount);
+        this.Map.setupBlocks(this.Screen.blockSize);
+        this.Character.setup(this.Screen, this.Map.blocks, this.Camera);
         this.Player.setLevel(this.level);
     }
 
@@ -66,7 +63,7 @@ export default class _GameController {
         if (this.Runtime.isStarted){
             // CHARACTER ALGORITHM 
             this.Character.resetJumpClick();
-            this.Character.update(this.CollisionDetector, this.Map.blocks);
+            this.Character.update();
             this.Character.updateFriction();
             this.Character.setSkinDirection();
 

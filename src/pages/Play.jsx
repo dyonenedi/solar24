@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react"
 import {GlobalContext} from "./../GlobalProvider"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Maps from "./../assets/js/maps"
+import Maps from "../assets/js/game_framework/workshop/maps"
 
 var GameController = {};
 

@@ -1,4 +1,6 @@
-class _Dummy {
+import _Collision from "./_collision";
+
+class _Dummy extends _Collision {
     // CONST
     _DEBUG = false;
     _SIZE_X_SCREEN = 4;
@@ -32,17 +34,24 @@ class _Dummy {
     // PHYSIC SKIN
     _bodyColor;
 
+    // SCREEN
+    _Blocks = {};
+    _Screen = {};
+
     constructor(){
+        super();
         this._MOVE_ACCELERATION = (this._MOVE_STRENGTH / this._WEIGHT);
         this._JUMP_ACCELERATION = (this._JUMP_STRENGTH / this._WEIGHT);
     }
 
-    _setup(wCamera, hCamera, blockSize, hScreen){
-        this._GRAVITY =  this._GRAVITY * hCamera /  this._SCREEN_H;
-        this._MAX_MOVE_VELOCITY = this._MAX_MOVE_VELOCITY * wCamera / this._SCREEN_W;
-        this._MAX_FALL_VELOCITY = this._MAX_FALL_VELOCITY * hCamera /  this._SCREEN_H;
-        this._MOVE_ACCELERATION = this._MOVE_ACCELERATION * wCamera / this._SCREEN_W;
-        this._JUMP_ACCELERATION = this._JUMP_ACCELERATION * hCamera /  this._SCREEN_H;
+    _setup(Screen, Blocks, Camera){
+        this._Screen = Screen;
+        this._Blocks = Blocks;
+        this._GRAVITY =  this._GRAVITY * Camera.h /  this._SCREEN_H;
+        this._MAX_MOVE_VELOCITY = this._MAX_MOVE_VELOCITY * Camera.w / this._SCREEN_W;
+        this._MAX_FALL_VELOCITY = this._MAX_FALL_VELOCITY * Camera.h /  this._SCREEN_H;
+        this._MOVE_ACCELERATION = this._MOVE_ACCELERATION * Camera.w / this._SCREEN_W;
+        this._JUMP_ACCELERATION = this._JUMP_ACCELERATION * Camera.h /  this._SCREEN_H;
 
         this._gravity =  this._GRAVITY;
         this._maxMoveVelocity =  this._MAX_MOVE_VELOCITY;
@@ -52,12 +61,12 @@ class _Dummy {
         this._xVelocity = 0;
         this._yVelocity = 0;
 
-        this._size = blockSize / this._SIZE_X_SCREEN;
+        this._size = this._Screen.blockSize / this._SIZE_X_SCREEN;
         this._w = this._size;
         this._h = this._size;
         this._x = 0;
         this._xx = this._x + this._size;
-        this._y = hScreen - this._h;
+        this._y = this._Screen.h - this._h;
         this._yy = this._y + this._size;
         
         this._jumping = false;
@@ -70,7 +79,7 @@ class _Dummy {
         this._bodyColor = "#333";
     }
 
-    update(CollisionDetector, blocks) {
+    update() {
         // PREPARA DIREÇÃO JUMP E DOUBLE JUMP
         if (this._jumpClick && this._yVelocity == 0 && !this._jumping) {
             this._yVelocity = this._jumpAcceleration;
@@ -105,19 +114,35 @@ class _Dummy {
             
         } else if (this._direction.right) {
             this.#moveRight();
-            
         }
 
         this.#resetIsColliding();
 
         // Valido colisão SCREEN retornando posição máxima permitida
-        CollisionDetector.checkScreenColliding(this);
+        this.getCollidingOut(this, this._Screen);
 
         // Valido colisão BLOKCS retornando posição máxima permitida
-        CollisionDetector.checkBlockCollision(this, blocks);
+        this._Blocks.forEach(Target => {
+            if (Target.isLand){
+               // Clona Blocks usando a função de clonagem profunda
+                let Block = {... Target};
 
+                // Certifique-se de que this.xScreen e this.yScreen são válidos
+                const xScreen = this.xScreen || 0;
+                const yScreen = this.yScreen || 0;
+                
+               // Transforma Env.Ground.blonk do x e y para screen
+                Block.x = Block.x - xScreen;
+                Block.xx = Block.x + Block.w;
+                Block.y = Block.y - yScreen;
+                Block.yy = Block.y + Block.h;
+
+                // Valida Colisão
+                this.getColliding(this, Block);
+            }
+        })
+        
         this.#debug();
-
     }
 
     draw(ctx) {

@@ -1,5 +1,4 @@
 import _Dummy from "../core/_dummy";
-import _CollisionDetector from '../core/collisionDetector';
 
 class _Character extends _Dummy {
     #FRINCTION = 7;
@@ -36,9 +35,9 @@ class _Character extends _Dummy {
         super()
     }
 
-    setup(wCamera, hCamera, blockSize, hScreen){
+    setup(Screen, Blocks, Camera){
         // Faz a transformação das constantes conforme o tamanho da tela.
-        this._setup(wCamera, hCamera, blockSize, hScreen)
+        this._setup(Screen, Blocks, Camera)
         this.#frinction = (this._maxFallVelocity / this.#FRINCTION)
 
         //#region SKIN

@@ -1,23 +1,26 @@
 export default class _Screen {
     #DEBUG = false;
+    #X_COUNT_BLOCKS = 0;
+    #Y_COUNT_BLOCKS = 0;
+
     #canvasElem = null;
+    #blockSize = 0;
     #w = null;
     #h = null;
     #x = 0;
     #y = 0;
     #xx = 0;
     #yy = 0;
-    #X_COUNT_BLOCKS = 0;
-    #Y_COUNT_BLOCKS = 0;
 
-    setSize(canvasElem, blockSize, xMapBlockCount, yMapBlockCount){
+    setup(canvasElem, blockSize, xMapBlockCount, yMapBlockCount){
         this.#canvasElem = canvasElem;
+        this.#blockSize = blockSize;
         this.#X_COUNT_BLOCKS = xMapBlockCount;
         this.#Y_COUNT_BLOCKS = yMapBlockCount;
 
         // Transforma Screen com base no tamanho da camera
-        this.#w = blockSize * xMapBlockCount;
-        this.#h = blockSize * yMapBlockCount;
+        this.#w = this.#blockSize * this.#X_COUNT_BLOCKS;
+        this.#h = this.#blockSize * this.#Y_COUNT_BLOCKS;
         this.#xx = this.#x + this.#w;
         this.#yy = this.#y + this.#h;
 
@@ -36,11 +39,20 @@ export default class _Screen {
     }
 
     //#region GETS & SETS
+    get X_COUNT_BLOCKS() {
+        return this.#X_COUNT_BLOCKS;
+    }
+    get Y_COUNT_BLOCKS() {
+        return this.#Y_COUNT_BLOCKS;
+    }
     get canvasElem() {
         return this.#canvasElem;
     }
     set canvasElem(value) {
         this.#canvasElem = value;
+    }
+    get blockSize(){
+        return this.#blockSize;
     }
     get w() {
         return this.#w;
@@ -77,12 +89,6 @@ export default class _Screen {
     }
     set yy(value) {
         this.#yy = value;
-    }
-    get X_COUNT_BLOCKS() {
-        return this.#X_COUNT_BLOCKS;
-    }
-    get Y_COUNT_BLOCKS() {
-        return this.#Y_COUNT_BLOCKS;
     }
     //#endregion
 }
