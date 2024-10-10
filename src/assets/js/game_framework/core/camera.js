@@ -6,7 +6,7 @@ export default class _Camera {
     #h = null;
     #BLOCK_SIZE = null;
     
-    setup(cameraElem){
+    setSize(cameraElem){
         this.#w = cameraElem.offsetWidth;
         this.#h = cameraElem.offsetHeight;
         this.#BLOCK_SIZE = this.#w / this.#X_COUNT_BLOCKS;

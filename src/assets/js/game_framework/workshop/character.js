@@ -1,4 +1,4 @@
-import _Dummy from "../core/dummy";
+import _Dummy from "../core/_dummy";
 import _CollisionDetector from '../core/collisionDetector';
 
 class _Character extends _Dummy {

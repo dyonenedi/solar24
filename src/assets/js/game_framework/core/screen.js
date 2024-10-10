@@ -10,7 +10,7 @@ export default class _Screen {
     #X_COUNT_BLOCKS = 0;
     #Y_COUNT_BLOCKS = 0;
 
-    setup(canvasElem, blockSize, xMapBlockCount, yMapBlockCount){
+    setSize(canvasElem, blockSize, xMapBlockCount, yMapBlockCount){
         this.#canvasElem = canvasElem;
         this.#X_COUNT_BLOCKS = xMapBlockCount;
         this.#Y_COUNT_BLOCKS = yMapBlockCount;

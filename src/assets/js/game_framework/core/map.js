@@ -1,45 +1,71 @@
 export default class _Map {
     #DEBUG = false;
+    #landColor = "#2dd4bf";
+    #bgColor = "#a8e6df";
+
     #xBlockCount = null;
     #yBlockCount = null;
-    #blocks = [];
     #maps = [];
+    #map = [];
+    #blocks = [];
 
-    constructor(){
-        this.#maps = [
-            [
-                [true, false, false, true, false, false, false, false, false, false, false, false], // linha 1
-                [true, false, false, true, false, false, false, false, false, false, false, false], // linha 2
-                [true, false, false, true, false, false, false, false, false, false, false, false], // linha 3
-                [false, false, false, true, false, false, false, false, false, false, false, false], // linha 4
-                [true, true,  false, true, true, true, false, true, false, true, false, true], // linha 5
-                [false, false, false, true, true, false, false, false, false, false, false, false], // linha 6
-            ],
-            [
-                [false, false, false, false, true, true,  false, false, false, true, false, false], // linha 1
-                [false, false,  false, false, true, false,  true,  true,  false, false, false, false], // linha 2
-                [false, false, false, false, true, false,  false,  true,  true,  true,  true,  false], // linha 3
-                [false,  false, false, false, true, false, false, false, false, false, false, false], // linha 4
-                [true, false, false,  false,  false,  false,  true,  true,  true,  true,  true,  true], // linha 5
-                [false, false , true,  true,  false,  true,  true,  true,  true,  true,  true,  true], // linha 6
-            ],
-            [
-                [true,  true, true, true, true, true,  true], // linha 1
-                [true, false,  true, true, false, false,  false], // linha 2
-                [false, true, false, true, false, true,  false], // linha 3
-                [false, false, false, false, false, false, false], // linha 4
-            ],
-        ];
+    setMaps(maps){
+        if (typeof maps != "object") {
+            throw new Error("Parameter maps must be an array");
+        }
+        this.#maps = maps;
     }
 
-    setup(level){
-        this.#blocks = this.#maps[level-1];
-        this.#xBlockCount = this.#blocks[0].length;
-        this.#yBlockCount = this.#blocks.length;
+    setLevel(level){
+        this.#map = this.#maps[level-1];
+        this.#xBlockCount = this.#map[0].length;
+        this.#yBlockCount = this.#map.length;
 
         if (this.#DEBUG) {
             console.log("| MAP |\nLevel: "+level+"\n"+"Linhas: "+this.#xBlockCount+"\n"+"Colunas: "+this.#yBlockCount);
         }
+    }
+
+    setupBlocks(blockSize) {
+        let i = 0;
+        this.#map.forEach((row, y) => {
+            row.forEach((isLand, x) => {
+                let posX = x * blockSize;
+                let posXX = posX + blockSize;
+                let posY = y * blockSize;
+                let posYY = posY + blockSize;
+                i++;
+                this.#blocks.push({ index: i, x: posX, xx: posXX, y: posY, yy: posYY, w: blockSize, h: blockSize, isLand: isLand });
+            });
+        });
+    }
+
+    draw(ctx, xScreen, yScreen, xxScreen, yyScreen) {
+        this.#blocks.forEach((block) => {
+            // Is block colliding with screen? So print land
+            if ((block.xx > xScreen && block.x < xxScreen) &&
+                (block.yy > yScreen && block.y < yyScreen)
+            ) {
+                let blockX = block.x - xScreen;
+                let blockY = block.y - yScreen;
+
+                ctx.fillStyle = (block.isLand) ? this.#landColor : this.#bgColor;
+                ctx.fillRect(blockX, blockY, block.w, block.h);
+
+                if (this.#DEBUG) {
+                    // Desenhar o índice no centro do bloco
+                    ctx.fillStyle = 'black'; // Cor do texto
+                    ctx.font = '20px Arial'; // Fonte do texto
+                    ctx.textAlign = 'center'; // Alinhamento horizontal
+                    ctx.textBaseline = 'middle'; // Alinhamento vertical
+    
+                    const textX = blockX + (block.w / 2);
+                    const textY = blockY + (block.h / 2);
+    
+                    ctx.fillText(block.index, textX, textY);
+                }
+            }
+        });
     }
 
     setDebug(debug){

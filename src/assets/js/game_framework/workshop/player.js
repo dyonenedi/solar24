@@ -2,7 +2,7 @@
 export default class _Player{
     #level = 1;
 
-    setup(level){
+    setLevel(level){
         this.#level = parseInt(level);
     }
     

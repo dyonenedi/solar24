@@ -1,11 +1,12 @@
 import "./../assets/css/play.css"
-import _GameFramework from '../assets/js/game'
+import _GameController from '../assets/js/game'
 import { useContext, useEffect, useState } from "react"
 import {GlobalContext} from "./../GlobalProvider"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Maps from "./../assets/js/maps"
 
-var GameFramework = {};
+var GameController = {};
 
 export default function Play(){
     const {setShowMenu} = useContext(GlobalContext)
@@ -15,12 +16,12 @@ export default function Play(){
     const [useFrameRate, setUseFrameRate] = useState(0)
     const handleFrameRate = (e) => {
         setUseFrameRate(e.target.value);
-        GameFramework.Runtime.FRAME_RATE = e.target.value;
+        GameController.Runtime.FRAME_RATE = e.target.value;
     }
     const [useGravity, setUseGravity] = useState(0)
     const handleGravity = (e) => {
         setUseGravity(e.target.value);
-        GameFramework.Character.gravity = e.target.value;
+        GameController.Character.gravity = e.target.value;
     }
     const [useJumping, setUseJumping] = useState(false)
     const [useRight, setUseRight] = useState(false)
@@ -54,18 +55,18 @@ export default function Play(){
          const level = 1;
          
          // GAME
-         const Setup = {level: level, cameraElem:cameraElem, canvasElem:canvasElem};
-         GameFramework = new _GameFramework();
-         GameFramework.setup(Setup);
-         GameFramework.start();
+         const Setup = {level: level, cameraElem:cameraElem, canvasElem:canvasElem, maps: Maps};
+         GameController = new _GameController();
+         GameController.setup(Setup);
+         GameController.start();
 
          setInterval(() => {
-            setUseFrameRate(GameFramework.Runtime.FRAME_RATE)
-            setUseGravity(GameFramework.Character.gravity)
-            setUseJumping(GameFramework.Character.direction.up)
-            setUseRight(GameFramework.Character.direction.right)
-            setUseColliding((GameFramework.Character.isColliding.block.right ? ('right') : (GameFramework.Character.isColliding.block.left ? 'left': 'none')))
-            setUseFps(GameFramework.Runtime.fps)
+            setUseFrameRate(GameController.Runtime.FRAME_RATE)
+            setUseGravity(GameController.Character.gravity)
+            setUseJumping(GameController.Character.direction.up)
+            setUseRight(GameController.Character.direction.right)
+            setUseColliding((GameController.Character.isColliding.block.right ? ('right') : (GameController.Character.isColliding.block.left ? 'left': 'none')))
+            setUseFps(GameController.Runtime.fps)
          }, 16.6);
     }
 
@@ -81,16 +82,16 @@ export default function Play(){
         document.getElementById('canvas').addEventListener('touchstart', canvasDivClick.bind(this));
     }
     function startDivClick() {
-        if (GameFramework.Runtime.isStarted == false) {
+        if (GameController.Runtime.isStarted == false) {
             document.getElementById('start').style.display = "none";
-            GameFramework.Runtime.isStarted = true;
-            GameFramework.start();
+            GameController.Runtime.isStarted = true;
+            GameController.start();
         }
     }
     function keyPress(e){
         if (e.key === ' ') {
-            GameFramework.Runtime.isPaused = !GameFramework.Runtime.isPaused;
-            if (GameFramework.Runtime.isPaused) {
+            GameController.Runtime.isPaused = !GameController.Runtime.isPaused;
+            if (GameController.Runtime.isPaused) {
                 document.getElementById('start').style.display = "flex";
                 document.getElementById('start').innerHTML = "Pausado";
             } else {
@@ -99,8 +100,8 @@ export default function Play(){
         }
     }
     function canvasDivClick() {
-        if (GameFramework.Runtime.isStarted && !GameFramework.Runtime.isPaused) {
-            GameFramework.Character.jumpClick = Date.now();
+        if (GameController.Runtime.isStarted && !GameController.Runtime.isPaused) {
+            GameController.Character.jumpClick = Date.now();
         }
     }
 
