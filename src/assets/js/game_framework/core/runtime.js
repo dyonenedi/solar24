@@ -37,7 +37,7 @@ export default class _Runtime{
         return this.#fps;
     }
     set fps(value){
-        this.#fps = (value).toFixed(1);
+        this.#fps = parseFloat(value).toFixed(1);
     }
     //#endregion
 }

@@ -49,9 +49,8 @@ export default function Play(){
          document.getElementById('start').innerHTML = "Clique para iniciar";
          const cameraElem = document.getElementById('camera')
          const canvasElem = document.getElementById('canvas')
-         const ctx = canvasElem.getContext('2d');
          const level = 1;
-         const debug = {
+         const Debug = {
             Player: false,
             Map: false,
             Camera: false,
@@ -62,10 +61,10 @@ export default function Play(){
          };
          
          // GAME
-         const setup = {cameraElem:cameraElem, canvasElem:canvasElem, ctx:ctx, level:level};
+         const Setup = {level: level, cameraElem:cameraElem, canvasElem:canvasElem};
          GameFramework = new _GameFramework();
-         GameFramework.debug(debug);
-         GameFramework.setup(setup);
+         GameFramework.debug(Debug);
+         GameFramework.setup(Setup);
          GameFramework.start();
 
          setInterval(() => {

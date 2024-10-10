@@ -1,8 +1,17 @@
 
 export default class _Player{
-    #DEBUG = false;
+    #level = 1;
 
-    setDebug(debug){
-        this.#DEBUG = debug;
+    setup(level){
+        this.#level = parseInt(level);
     }
+    
+    //#region GETs & SETs
+    get level(){
+        return this.#level;
+    }
+    set level(value){
+        this.#level = parseInt(value);
+    }
+    //#endregion
 }
