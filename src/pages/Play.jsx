@@ -1,9 +1,11 @@
 import "./../assets/css/play.css"
-import _GameFramework from '../assets/js/game_framework/builder/game_framework'
+import _GameFramework from '../assets/js/game'
 import { useContext, useEffect, useState } from "react"
 import {GlobalContext} from "./../GlobalProvider"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+var GameFramework = {};
 
 export default function Play(){
     const {setShowMenu} = useContext(GlobalContext)
@@ -50,20 +52,10 @@ export default function Play(){
          const cameraElem = document.getElementById('camera')
          const canvasElem = document.getElementById('canvas')
          const level = 1;
-         const Debug = {
-            Player: false,
-            Map: false,
-            Camera: false,
-            Screen: false,
-            Env: false,
-            CollisionDetector: false,
-            Character: false,
-         };
          
          // GAME
          const Setup = {level: level, cameraElem:cameraElem, canvasElem:canvasElem};
          GameFramework = new _GameFramework();
-         GameFramework.debug(Debug);
          GameFramework.setup(Setup);
          GameFramework.start();
 
