@@ -1,13 +1,13 @@
 
-export default class _Runtime{
+export default class Runtime{
     #FRAME_RATE= 60;
     #FRAME_INTERVAL = 1000 / this.#FRAME_RATE;
     #isStarted = false;
     #isPaused = false;
     #fps = 0;
 
-    #setup(frameRate=60){
-        this.#FRAME_RATE = frameRate;
+    setFramerate(frameRate=60){
+        this.#FRAME_RATE = parseFloat(frameRate);
         this.#FRAME_INTERVAL = 1000 / this.#FRAME_RATE;
     }
 
@@ -16,7 +16,7 @@ export default class _Runtime{
         return this.#FRAME_RATE;
     }
     set FRAME_RATE(value){
-        this.#setup(parseFloat(value))
+        this.setFramerate(value)
     }
     get isStarted(){
         return this.#isStarted;

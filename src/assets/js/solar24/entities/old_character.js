@@ -1,6 +1,6 @@
-import _Dummy from "../core/_dummy";
+import Dummy from "../framework/core/_dummy";
 
-class _Character extends _Dummy {
+class Character extends Dummy {
     #FRINCTION = 7;
     #CLICK_JUMP_LIVETIME = 200;
 
@@ -155,4 +155,4 @@ class _Character extends _Dummy {
     }
 }
 
-export default _Character;
+export default Character;

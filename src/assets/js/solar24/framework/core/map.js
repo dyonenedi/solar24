@@ -1,4 +1,4 @@
-export default class _Map {
+export default class Map {
     #DEBUG = false;
     #landColor = "#2dd4bf";
     #bgColor = "#a8e6df";
@@ -9,13 +9,12 @@ export default class _Map {
     #map = [];
     #blocks = [];
 
-    setMaps(maps){
+    constructor(maps){
         if (typeof maps != "object") {
             throw new Error("Parameter maps must be an array");
         }
         this.#maps = maps;
     }
-
     setLevel(level){
         this.#map = this.#maps[level-1];
         this.#xBlockCount = this.#map[0].length;

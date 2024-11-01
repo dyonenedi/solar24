@@ -1,0 +1,6 @@
+{
+    "level": 1,
+    "frame_rate": 60,
+    "cameraElementId": "camera",
+    "canvasElementId": "canvas"
+}

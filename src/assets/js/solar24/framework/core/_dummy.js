@@ -1,6 +1,6 @@
-import _Collision from "./_collision";
+import Collision from "./_collision";
 
-class _Dummy extends _Collision {
+class _Dummy extends Collision {
     // CONST
     _DEBUG = false;
     _SIZE_X_SCREEN = 4;

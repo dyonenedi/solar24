@@ -1,9 +1,10 @@
-export default class _Screen {
+export default class Screen {
     #DEBUG = false;
     #X_COUNT_BLOCKS = 0;
     #Y_COUNT_BLOCKS = 0;
 
     #canvasElem = null;
+    #ctx = null;
     #blockSize = 0;
     #w = null;
     #h = null;
@@ -12,13 +13,24 @@ export default class _Screen {
     #xx = 0;
     #yy = 0;
 
-    setup(canvasElem, blockSize, xMapBlockCount, yMapBlockCount){
-        this.#canvasElem = canvasElem;
+    setup(canvasElementId){
+        const canvasElem = document.getElementById(canvasElementId);
+        if (canvasElem instanceof HTMLCanvasElement) {
+            this.#canvasElem = canvasElem;
+            this.#ctx = this.#canvasElem.getContext("2d");
+        } else {
+            throw new Error("Parameter canvasElem must be a HTMLCanvasElement")
+        }
+    }
+
+    setSize(blockSize, xMapBlockCount, yMapBlockCount){
         this.#blockSize = blockSize;
         this.#X_COUNT_BLOCKS = xMapBlockCount;
         this.#Y_COUNT_BLOCKS = yMapBlockCount;
+        this.#resizeByCameraSize()
+    }
 
-        // Transforma Screen com base no tamanho da camera
+    #resizeByCameraSize(){
         this.#w = this.#blockSize * this.#X_COUNT_BLOCKS;
         this.#h = this.#blockSize * this.#Y_COUNT_BLOCKS;
         this.#xx = this.#x + this.#w;
@@ -89,6 +101,9 @@ export default class _Screen {
     }
     set yy(value) {
         this.#yy = value;
+    }
+    get ctx() {
+        return this.#ctx;
     }
     //#endregion
 }

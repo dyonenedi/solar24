@@ -1,4 +1,4 @@
-export default class _Camera {
+export default class Camera {
     #DEBUG = false;
     #X_COUNT_BLOCKS = 6;
     #Y_COUNT_BLOCKS = 3;
@@ -6,10 +6,15 @@ export default class _Camera {
     #h = null;
     #BLOCK_SIZE = null;
     
-    setSize(cameraElem){
-        this.#w = cameraElem.offsetWidth;
-        this.#h = cameraElem.offsetHeight;
-        this.#BLOCK_SIZE = this.#w / this.#X_COUNT_BLOCKS;
+    setSize(cameraElementId){
+        const cameraElem = document.getElementById(cameraElementId);
+        if (cameraElem instanceof HTMLDivElement) {
+            this.#w = cameraElem.offsetWidth;
+            this.#h = cameraElem.offsetHeight;
+            this.#BLOCK_SIZE = this.#w / this.#X_COUNT_BLOCKS;
+        } else {
+            throw new Error("Parameter cameraElementId must be a HTMLDivElement")
+        }
     }
 
     update(Player, Screen){

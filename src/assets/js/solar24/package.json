@@ -1,0 +1,11 @@
+{
+  "name": "solar24",
+  "version": "1.0.0",
+  "description": "A flexible 2D game JS framework.",
+  "main": "framework/controller/gamecontroller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dyon Enedi",
+  "license": "MIT"
+}

@@ -1,12 +1,14 @@
 import "./../assets/css/play.css"
-import _GameController from '../assets/js/game'
+import GameController from '../assets/js/game/gamecontroller'
 import { useContext, useEffect, useState } from "react"
 import {GlobalContext} from "./../GlobalProvider"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Maps from "../assets/js/game_framework/workshop/maps"
-
-var GameController = {};
+// ##### SOLAR24 FRAMEWORK #####
+import Config from "../assets/js/game/config"
+import Maps from "../assets/js/game/maps"
+var gameController = {};
+// ##### SOLAR24 FRAMEWORK #####
 
 export default function Play(){
     const {setShowMenu} = useContext(GlobalContext)
@@ -16,12 +18,12 @@ export default function Play(){
     const [useFrameRate, setUseFrameRate] = useState(0)
     const handleFrameRate = (e) => {
         setUseFrameRate(e.target.value);
-        GameController.Runtime.FRAME_RATE = e.target.value;
+        gameController.Runtime.FRAME_RATE = e.target.value;
     }
     const [useGravity, setUseGravity] = useState(0)
     const handleGravity = (e) => {
         setUseGravity(e.target.value);
-        GameController.Character.gravity = e.target.value;
+        gameController.Character.gravity = e.target.value;
     }
     const [useJumping, setUseJumping] = useState(false)
     const [useRight, setUseRight] = useState(false)
@@ -34,7 +36,15 @@ export default function Play(){
         setShowFooter(false)
         resetPlayAreaSize()
         setGameMenuWidth()
-        GameStart();
+        setTextOnScreen("Clique para iniciar");
+
+        // ##### SOLAR24 FRAMEWORK #####
+        Config.maps = Maps;
+        gameController = new GameController(Config);
+        gameController.start();
+        // ##### SOLAR24 FRAMEWORK #####
+        
+        updatePropByGame();
         setEvents();
     },[])
     
@@ -46,28 +56,18 @@ export default function Play(){
     function setGameMenuWidth(){
         document.getElementById('gameMenu').style.width = GAME_W
     }
-
-    function GameStart(){
-         // CONST
-         document.getElementById('start').innerHTML = "Clique para iniciar";
-         const cameraElem = document.getElementById('camera')
-         const canvasElem = document.getElementById('canvas')
-         const level = 1;
-         
-         // GAME
-         const Setup = {level: level, cameraElem:cameraElem, canvasElem:canvasElem, maps: Maps};
-         GameController = new _GameController();
-         GameController.setup(Setup);
-         GameController.start();
-
-         setInterval(() => {
-            setUseFrameRate(GameController.Runtime.FRAME_RATE)
-            setUseGravity(GameController.Character.gravity)
-            setUseJumping(GameController.Character.direction.up)
-            setUseRight(GameController.Character.direction.right)
-            setUseColliding((GameController.Character.isColliding.block.right ? ('right') : (GameController.Character.isColliding.block.left ? 'left': 'none')))
-            setUseFps(GameController.Runtime.fps)
-         }, 16.6);
+    function setTextOnScreen(string){
+        document.getElementById('start').innerHTML = string;
+    }
+    function updatePropByGame(){
+        setInterval(() => {
+            setUseFrameRate(gameController.Runtime.FRAME_RATE)
+            setUseGravity(gameController.Character.gravity)
+            setUseJumping(gameController.Character.direction.up)
+            setUseRight(gameController.Character.direction.right)
+            setUseColliding((gameController.Character.isColliding.block.right ? ('right') : (gameController.Character.isColliding.block.left ? 'left': 'none')))
+            setUseFps(gameController.Runtime.fps)
+        }, 16.6);
     }
 
     function setEvents(){
@@ -82,16 +82,16 @@ export default function Play(){
         document.getElementById('canvas').addEventListener('touchstart', canvasDivClick.bind(this));
     }
     function startDivClick() {
-        if (GameController.Runtime.isStarted == false) {
+        if (gameController.Runtime.isStarted == false) {
             document.getElementById('start').style.display = "none";
-            GameController.Runtime.isStarted = true;
-            GameController.start();
+            gameController.Runtime.isStarted = true;
+            gameController.start();
         }
     }
     function keyPress(e){
         if (e.key === ' ') {
-            GameController.Runtime.isPaused = !GameController.Runtime.isPaused;
-            if (GameController.Runtime.isPaused) {
+            gameController.Runtime.isPaused = !gameController.Runtime.isPaused;
+            if (gameController.Runtime.isPaused) {
                 document.getElementById('start').style.display = "flex";
                 document.getElementById('start').innerHTML = "Pausado";
             } else {
@@ -100,8 +100,8 @@ export default function Play(){
         }
     }
     function canvasDivClick() {
-        if (GameController.Runtime.isStarted && !GameController.Runtime.isPaused) {
-            GameController.Character.jumpClick = Date.now();
+        if (gameController.Runtime.isStarted && !gameController.Runtime.isPaused) {
+            gameController.Character.jumpClick = Date.now();
         }
     }
 
