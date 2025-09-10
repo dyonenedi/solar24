@@ -12,6 +12,8 @@ git clone https://github.com/dyonenedi/solar24.git
 cd solar24
 npm run dev
 ```
+Dependece
+Node.JS v20.19.2
 
 ## Owner
 - [Dyon Enedi](https://github.com/dyonenedi)
